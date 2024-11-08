@@ -50,13 +50,16 @@ public sealed record Board
 
         foreach (int y in Bounds.EnumerateY())
         {
+            if (y > Bounds.Start.Y)
+            {
+                sb.AppendLine();
+            }
             foreach (int x in Bounds.EnumerateX())
             {
                 sb.Append(
                     IsOccupied(new Coord(x, y)) ? 'x' : '.'
                 );
             }
-            sb.AppendLine();
         }
 
         return sb.ToString();

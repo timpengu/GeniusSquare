@@ -1,5 +1,6 @@
 ﻿using GeniusSquare.Coords;
 using GeniusSquare.Game;
+using MoreLinq;
 
 namespace GeniusSquare.Configuration;
 
@@ -14,10 +15,21 @@ public static class ConfigExtensions
             Coord boardSize = config.BoardSize?.ToCoord()
                 ?? throw new Exception($"Config has missing {nameof(Config.BoardSize)}.");
 
-            return Board
+            // Create board with configured occupied positions
+            var board = Board
                 .Create(boardSize)
                 .WithOccupied(config.OccupiedIndexes)
                 .WithOccupied(config.OccupiedCoords.Select(ToCoord));
+
+            // Add random occupied positions if configured
+            board = board.WithOccupied(
+                board.Bounds
+                    .EnumerateCoords()
+                    .Where(coord => !board.IsOccupied(coord))
+                    .Shuffle() // generate a random permutation of unoccupied positions
+                    .Take(config.OccupiedRandoms)); // take the first N (if available)
+
+            return board;
         }
         catch (Exception e)
         {

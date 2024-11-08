@@ -12,13 +12,29 @@ public class Program
         Board board = config.GenerateBoard();
         IList<Piece> pieces = config.GeneratePieces().ToList();
 
+        int boardPositions = board.Bounds.EnumerateCoords().Count(coord => !board.IsOccupied(coord));
+        int piecePositions = pieces.Sum(p => p.Positions);
+
         Console.WriteLine("Initial board state:");
         Console.WriteLine(board);
+        Console.WriteLine();
+
         Console.WriteLine("Placing pieces (with orientations):");
         foreach (Piece piece in pieces)
         {
             Console.WriteLine($"{piece} ({String.Join(",", piece.Orientations.Select(op => op.Name))})");
         }
+        Console.WriteLine();
+
+        Console.WriteLine($"Board positions: {boardPositions} unoccupied");
+        Console.WriteLine($"Piece positions: {piecePositions} to place");
+        string constraint = piecePositions.CompareTo(boardPositions) switch
+        {
+            <0 => "under",
+            >0 => "over",
+            _ => "critically",
+        };
+        Console.WriteLine($"Board is {constraint} constrained.");
         Console.WriteLine();
 
         Stopwatch sw = new();

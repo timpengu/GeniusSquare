@@ -8,11 +8,12 @@ public sealed record Config
     
     public ConfigCoord[] OccupiedCoords { get; set; } = [];
     public string[] OccupiedIndexes { get; set; } = [];
+    public int OccupiedRandoms { get; set; } = 0;
 
     public ConfigPiece[] Pieces { get; set; } = [];
-    
-    public bool AllowRotation { get; set; }
-    public bool AllowReflection { get; set; }
+
+    public bool AllowRotation { get; set; } = true;
+    public bool AllowReflection { get; set; } = true;
 
     public static Config Load(string configPath)
     {
