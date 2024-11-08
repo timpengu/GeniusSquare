@@ -39,7 +39,10 @@ public static class ConfigPiecesExtensions
                 orientations.AddRange(reflectedPieces);
             }
 
-            yield return new Piece(pieceConfig.Name, orientations.Distinct());
+            yield return new Piece(
+                pieceConfig.Name,
+                orientations.Distinct() // exclude duplicates due to symmetry (instances must be normalised)
+            );
         }
     }
 }

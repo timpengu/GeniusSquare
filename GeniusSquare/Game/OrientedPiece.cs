@@ -14,14 +14,14 @@ public sealed record OrientedPiece : IEquatable<OrientedPiece>
         Bounds = Positions.GetBounds();
     }
 
-    // TODO: Make Normalise public and remove it from ctor? (allow denormalised instances)
+    // TODO: Allow denormalised instances and let caller normalise positions?
     private static IEnumerable<Coord> Normalise(IEnumerable<Coord> positions)
     {
         List<Coord> positionsList = positions.ToList(); // copy for multiple enumeration
         CoordRange bounds = positionsList.GetBounds();
         return positionsList
-            .Offset(-bounds.Start) // transpose to origin
-            .Order(); // apply default ordering
+            .Transpose(-bounds.Start) // transpose to origin
+            .Order(); // apply standard ordering
     }
 
     public bool Equals(OrientedPiece? other)

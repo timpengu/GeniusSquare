@@ -3,10 +3,10 @@
 namespace GeniusSquare.Game;
 public static class OrientedPieceExtensions
 {
-    public static CoordRange GetPlacementRange(this OrientedPiece piece, CoordRange boardRange) =>
+    public static CoordRange GetPlacementRange(this OrientedPiece piece, Board board) =>
         new CoordRange(
-            boardRange.Start - piece.Bounds.Start,
-            boardRange.End - piece.Bounds.End + new Coord(1,1) // adjust range end to be exclusive
+            board.Bounds.Start - piece.Bounds.Start,
+            board.Bounds.End - piece.Bounds.End + new Coord(1,1) // adjust range end to be exclusive
         );
 
     public static OrientedPiece Reflect(this OrientedPiece piece, string? name = null) =>

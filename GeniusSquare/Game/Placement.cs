@@ -3,8 +3,9 @@ using System.Xml.Linq;
 
 namespace GeniusSquare.Game;
 
-public record struct Placement(OrientedPiece OrientedPiece, Coord Coord)
+public record struct Placement(OrientedPiece OrientedPiece, Coord Offset)
 {
-    // TODO: Allow denormalised OrientedPiece to simplify adding Coord offset
-    public override string ToString() => $"{OrientedPiece.Name,-4} @ {Coord} => [{string.Join(",", OrientedPiece.Positions.Offset(Coord))}]";
+    public IEnumerable<Coord> Positions => OrientedPiece.Positions.Transpose(Offset);
+
+    public override string ToString() => $"{OrientedPiece.Name,-4} @ {Offset} => [{string.Join(",", Positions)}]";
 }

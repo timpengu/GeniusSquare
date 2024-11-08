@@ -7,12 +7,10 @@ public class Program
 {
     public static void Main()
     {
-        ConfigPieces config = ConfigPieces.Load("Pieces.json");
-        IEnumerable<Piece> pieces = config.GeneratePieces().ToList();
+        IEnumerable<Piece> pieces = ConfigPieces.Load("Pieces.json").GeneratePieces().ToList();
 
-        Board board = Board
-            .Empty(6, 6)
-            .WithPositions("A6", "B1", "B5", "D1", "E3", "F2", "F4");
+        // TODO: move board parameters into config
+        Board board = Board.Create(6, 6).WithOccupied("A6", "B1", "B5", "D1", "E3", "F2", "F4");
 
         Console.WriteLine($"Initial board state:\n{board}");
 
@@ -21,7 +19,7 @@ public class Program
         Stopwatch sw = new();
         sw.Start();
 
-        foreach (Solution solution in board.PlaceAll(pieces))
+        foreach (Solution solution in Solver.GetSolutions(board, pieces))
         {
             ++solutionCount;
 

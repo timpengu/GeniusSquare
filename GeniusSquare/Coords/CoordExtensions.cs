@@ -5,6 +5,27 @@ namespace GeniusSquare.Coords;
 
 public static class CoordExtensions
 {
+    public static IEnumerable<Coord> Transpose(this IEnumerable<Coord> coords, Coord offset)
+        => coords
+            .Select(coord => coord + offset);
+
+    public static CoordRange GetBounds(this IEnumerable<Coord> coords)
+        => coords
+            .ThrowIfEmpty()
+            .Aggregate(
+                new CoordRange(
+                    new(int.MaxValue, int.MaxValue),
+                    new(int.MinValue, int.MinValue)
+                ),
+                (range, coord) => new CoordRange(
+                    new(
+                        Math.Min(range.Start.X, coord.X),
+                        Math.Min(range.Start.Y, coord.Y)),
+                    new(
+                        Math.Max(range.End.X, coord.X + 1),
+                        Math.Max(range.End.Y, coord.Y + 1))
+                ));
+
     public static IEnumerable<Coord> ToCoords(this IEnumerable<string> indexes) => indexes.Select(ToCoord);
     public static Coord ToCoord(this string index)
     {
@@ -17,41 +38,4 @@ public static class CoordExtensions
 
         return new Coord(x, y);
     }
-
-    public static IEnumerable<Coord> Offset(this IEnumerable<Coord> positions, Coord offset) => positions.Select(pos => pos + offset);
-
-    // TODO: Convert GetBounds to CoordRange ctor?
-    public static CoordRange GetBounds(this IEnumerable<Coord> coords) =>
-        coords
-        .ThrowIfEmpty()
-        .Aggregate(
-            new CoordRange(
-                new(int.MaxValue, int.MaxValue),
-                new(int.MinValue, int.MinValue)
-            ),
-            (range, coord) => new CoordRange(
-                new(
-                    Math.Min(range.Start.X, coord.X),
-                    Math.Min(range.Start.Y, coord.Y)),
-                new(
-                    Math.Max(range.End.X, coord.X + 1),
-                    Math.Max(range.End.Y, coord.Y + 1))
-            ));
-
-    // TODO: Convert EnumerateCoords etc into member methods?
-    public static IEnumerable<Coord> EnumerateCoords(this CoordRange range)
-    {
-        foreach (int y in range.EnumerateY())
-        {
-            foreach (int x in range.EnumerateX())
-            {
-                yield return new Coord(x, y);
-            }
-        }
-    }
-
-    public static IEnumerable<int> EnumerateX(this CoordRange range) => Range(range.Start.X, range.End.X);
-    public static IEnumerable<int> EnumerateY(this CoordRange range) => Range(range.Start.Y, range.End.Y);
-    private static IEnumerable<int> Range(int start, int end) => Enumerable.Range(start, end - start);
 }
-
