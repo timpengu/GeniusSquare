@@ -16,6 +16,8 @@ public sealed class PlacementDifficultyComparer : IComparer<Piece>
         int comparePositions = aPositions.CompareTo(bPositions); // more positions are more difficult to place
         if (comparePositions != 0) return comparePositions;
 
+        // TODO: Consider eccentricity? i.e. longest dimension divided by shortest dimension
+
         int aOrientations = a.Orientations.Count;
         int bOrientations = b.Orientations.Count;
         int compareOrientations = -aOrientations.CompareTo(bOrientations); // fewer orientations are more difficult to place

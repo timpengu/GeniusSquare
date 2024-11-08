@@ -1,4 +1,4 @@
-﻿using GeniusSquare.Config;
+﻿using GeniusSquare.Configuration;
 using GeniusSquare.Game;
 using System.Diagnostics;
 
@@ -7,18 +7,24 @@ public class Program
 {
     public static void Main()
     {
-        IEnumerable<Piece> pieces = ConfigPieces.Load("Pieces.json").GeneratePieces().ToList();
+        Config config = Config.Load("Config.json");
 
-        // TODO: move board parameters into config
-        Board board = Board.Create(6, 6).WithOccupied("A6", "B1", "B5", "D1", "E3", "F2", "F4");
+        Board board = config.GenerateBoard();
+        IList<Piece> pieces = config.GeneratePieces().ToList();
 
-        Console.WriteLine($"Initial board state:\n{board}");
-
-        int solutionCount = 0;
+        Console.WriteLine("Initial board state:");
+        Console.WriteLine(board);
+        Console.WriteLine("Placing pieces (with orientations):");
+        foreach (Piece piece in pieces)
+        {
+            Console.WriteLine($"{piece} ({String.Join(",", piece.Orientations.Select(op => op.Name))})");
+        }
+        Console.WriteLine();
 
         Stopwatch sw = new();
         sw.Start();
 
+        int solutionCount = 0;
         foreach (Solution solution in Solver.GetSolutions(board, pieces))
         {
             ++solutionCount;

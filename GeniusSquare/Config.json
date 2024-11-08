@@ -1,18 +1,19 @@
 ﻿{
+  "BoardSize": [ 6, 6 ],
+  "OccupiedIndexes": [ "A6", "B1", "B5", "D1", "E3", "F2", "F4" ],
   "AllowRotation": true,
   "AllowReflection": true,
-
   "Pieces": [
     {
       // ⬛
-      "Name": "1I",
+      "Name": "O1",
       "Positions": [
         [ 0, 0 ]
       ]
     },
     {
       // ⬛ ⬛
-      "Name": "2I",
+      "Name": "I2",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ]
@@ -20,7 +21,7 @@
     },
     {
       // ⬛ ⬛ ⬛
-      "Name": "3I",
+      "Name": "I3",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -30,7 +31,7 @@
     {
       // ⬛
       // ⬛ ⬛
-      "Name": "3J",
+      "Name": "J3",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -39,7 +40,7 @@
     },
     {
       // ⬛ ⬛ ⬛ ⬛
-      "Name": "4I",
+      "Name": "I4",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -50,7 +51,7 @@
     {
       // ⬛
       // ⬛ ⬛ ⬛
-      "Name": "4J",
+      "Name": "J4",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -61,7 +62,7 @@
     {
       // ⬛ ⬛
       // ⬛ ⬛
-      "Name": "4O",
+      "Name": "O4",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -72,7 +73,7 @@
     {
       //   ⬛
       // ⬛ ⬛ ⬛
-      "Name": "4T",
+      "Name": "T4",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -83,7 +84,7 @@
     {
       //   ⬛ ⬛
       // ⬛ ⬛
-      "Name": "4S",
+      "Name": "S4",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],

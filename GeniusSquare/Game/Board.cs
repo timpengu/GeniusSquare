@@ -7,12 +7,12 @@ public sealed record Board
     private readonly IEnumerable<Placement> _placements;
     private readonly bool[,] _occupation;
 
-    public static Board Create(int xSize, int ySize) => new Board(xSize, ySize);
+    public static Board Create(Coord size) => new Board(size);
     
-    private Board(int xSize, int ySize)
+    private Board(Coord size)
     {
         _placements = Enumerable.Empty<Placement>();
-        _occupation = new bool[xSize, ySize];
+        _occupation = new bool[size.X, size.Y];
     }
 
     private Board(IEnumerable<Placement> placements, bool[,] occupation)
