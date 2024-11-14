@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace GeniusSquare.Coords;
+namespace GeniusSquare.Core.Coords;
 
 public static class CoordExtensions
 {
@@ -13,17 +13,10 @@ public static class CoordExtensions
         => coords
             .ThrowIfEmpty()
             .Aggregate(
-                new CoordRange(
-                    new(int.MaxValue, int.MaxValue),
-                    new(int.MinValue, int.MinValue)
-                ),
+                new CoordRange(Coord.MaxValue, Coord.MinValue),
                 (range, coord) => new CoordRange(
-                    new(
-                        Math.Min(range.Start.X, coord.X),
-                        Math.Min(range.Start.Y, coord.Y)),
-                    new(
-                        Math.Max(range.End.X, coord.X + 1),
-                        Math.Max(range.End.Y, coord.Y + 1))
+                    Coord.Min(range.Start, coord),
+                    Coord.Max(range.End, coord + new Coord(1, 1)) // use exclusive range end
                 ));
 
     public static IEnumerable<Coord> ToCoords(this IEnumerable<string> indexes) => indexes.Select(ToCoord);

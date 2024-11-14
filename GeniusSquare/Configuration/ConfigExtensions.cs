@@ -1,41 +1,12 @@
-﻿using GeniusSquare.Coords;
-using GeniusSquare.Game;
-using MoreLinq;
+﻿using GeniusSquare.Core.Coords;
+using GeniusSquare.Core.Game;
 
 namespace GeniusSquare.Configuration;
 
 public static class ConfigExtensions
 {
+    public static Coord? GetDefaultBoardSize(this Config config) => config.DefaultBoardSize?.ToCoord();
     public static Coord ToCoord(this ConfigCoord coord) => new Coord(coord.X, coord.Y);
-
-    public static Board GenerateBoard(this Config config)
-    {
-        try
-        {
-            Coord boardSize = config.BoardSize?.ToCoord()
-                ?? throw new Exception($"Config has missing {nameof(Config.BoardSize)}.");
-
-            // Create board with configured occupied positions
-            var board = Board
-                .Create(boardSize)
-                .WithOccupied(config.OccupiedIndexes)
-                .WithOccupied(config.OccupiedCoords.Select(ToCoord));
-
-            // Add random occupied positions if configured
-            board = board.WithOccupied(
-                board.Bounds
-                    .EnumerateCoords()
-                    .Where(coord => !board.IsOccupied(coord))
-                    .Shuffle() // generate a random permutation of unoccupied positions
-                    .Take(config.OccupiedRandoms)); // take the first N (if available)
-
-            return board;
-        }
-        catch (Exception e)
-        {
-            throw new Exception("Failed to load board from config.", e);
-        }
-    }
 
     public static IEnumerable<Piece> GeneratePieces(this Config config)
     {

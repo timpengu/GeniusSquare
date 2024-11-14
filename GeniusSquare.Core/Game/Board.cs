@@ -1,7 +1,7 @@
-﻿using GeniusSquare.Coords;
+﻿using GeniusSquare.Core.Coords;
 using System.Text;
 
-namespace GeniusSquare.Game;
+namespace GeniusSquare.Core.Game;
 public sealed record Board
 {
     private readonly IEnumerable<Placement> _placements;
@@ -11,6 +11,9 @@ public sealed record Board
     
     private Board(Coord size)
     {
+        if (size.X < 0 || size.Y < 0)
+            throw new ArgumentException("Board size cannot be negative.", nameof(size));
+
         _placements = Enumerable.Empty<Placement>();
         _occupation = new bool[size.X, size.Y];
     }
@@ -30,7 +33,6 @@ public sealed record Board
     public bool IsOccupied(Placement placement) => placement.Positions.Any(IsOccupied);
     public bool IsOccupied(Coord position) => _occupation[position.X, position.Y];
 
-    public Board WithOccupied(params string[] indexes) => WithOccupied(indexes.ToCoords());
     public Board WithOccupied(IEnumerable<Coord> positions) => new Board(_placements, WithOccupation(positions));
     public Board WithPlacement(Placement placement) => new Board(_placements.Append(placement), WithOccupation(placement.Positions));
 
@@ -50,12 +52,13 @@ public sealed record Board
 
         foreach (int y in Bounds.EnumerateY())
         {
-            if (y > Bounds.Start.Y)
-            {
-                sb.AppendLine();
-            }
             foreach (int x in Bounds.EnumerateX())
             {
+                if (x == Bounds.Start.X && y != Bounds.Start.Y)
+                {
+                    sb.AppendLine();
+                }
+
                 sb.Append(
                     IsOccupied(new Coord(x, y)) ? 'x' : '.'
                 );

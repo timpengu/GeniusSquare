@@ -1,4 +1,4 @@
-﻿namespace GeniusSquare.Game;
+﻿namespace GeniusSquare.Core.Game;
 
 /// <summary>
 /// Compares pieces according to a heuristic placement difficulty metric

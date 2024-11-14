@@ -5,7 +5,9 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeniusSquare", "GeniusSquare\GeniusSquare.csproj", "{D1CB9356-A354-4456-B0DD-E558C37CDC20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeniusSquare.Tests", "GeniusSquare.Tests\GeniusSquare.Tests.csproj", "{0B5DE746-1707-4368-98D0-0FBAD931B6F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeniusSquare.Core.Tests", "GeniusSquare.Tests\GeniusSquare.Core.Tests.csproj", "{0B5DE746-1707-4368-98D0-0FBAD931B6F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeniusSquare.Core", "GeniusSquare.Core\GeniusSquare.Core.csproj", "{CC5544E2-B6DE-4740-A608-9969E241F49F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0B5DE746-1707-4368-98D0-0FBAD931B6F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B5DE746-1707-4368-98D0-0FBAD931B6F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B5DE746-1707-4368-98D0-0FBAD931B6F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC5544E2-B6DE-4740-A608-9969E241F49F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC5544E2-B6DE-4740-A608-9969E241F49F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC5544E2-B6DE-4740-A608-9969E241F49F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC5544E2-B6DE-4740-A608-9969E241F49F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

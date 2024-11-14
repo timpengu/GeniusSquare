@@ -1,6 +1,6 @@
-﻿using GeniusSquare.Coords;
+﻿using GeniusSquare.Core.Coords;
 
-namespace GeniusSquare.Game;
+namespace GeniusSquare.Core.Game;
 public sealed record Piece
 {
     public Piece(string name, IEnumerable<OrientedPiece> orientations)

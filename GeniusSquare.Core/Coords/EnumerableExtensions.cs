@@ -1,4 +1,4 @@
-﻿namespace GeniusSquare.Coords;
+﻿namespace GeniusSquare.Core.Coords;
 
 public static class EnumerableExtensions
 {

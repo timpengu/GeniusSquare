@@ -4,12 +4,8 @@ namespace GeniusSquare.Configuration;
 
 public sealed record Config
 {
-    public ConfigCoord? BoardSize { get; set; }
+    public ConfigCoord? DefaultBoardSize { get; set; }
     
-    public ConfigCoord[] OccupiedCoords { get; set; } = [];
-    public string[] OccupiedIndexes { get; set; } = [];
-    public int OccupiedRandoms { get; set; } = 0;
-
     public ConfigPiece[] Pieces { get; set; } = [];
 
     public bool AllowRotation { get; set; } = true;

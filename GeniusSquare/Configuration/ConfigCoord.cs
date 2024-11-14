@@ -1,4 +1,4 @@
-﻿using GeniusSquare.Coords;
+﻿using GeniusSquare.Core.Coords;
 
 namespace GeniusSquare.Configuration;
 

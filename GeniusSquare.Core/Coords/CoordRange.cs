@@ -1,4 +1,4 @@
-﻿namespace GeniusSquare.Coords;
+﻿namespace GeniusSquare.Core.Coords;
 
 /// <summary>
 /// Defines a bounding box with half-open coordinate ranges
@@ -20,7 +20,13 @@ public record struct CoordRange(Coord Start, Coord End)
 
     public IEnumerable<int> EnumerateX() => Range(Start.X, End.X);
     public IEnumerable<int> EnumerateY() => Range(Start.Y, End.Y);
-    private static IEnumerable<int> Range(int start, int end) => Enumerable.Range(start, end - start);
+    private static IEnumerable<int> Range(int start, int end)
+    {
+        if (start > end)
+            throw new InvalidOperationException($"Negative range: [{start}..{end})");
+
+        return Enumerable.Range(start, end - start);
+    }
 
     public override string ToString() => $"[{Start},{End}]";
 }

@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GeniusSquare\GeniusSquare.csproj" />
+    <ProjectReference Include="..\GeniusSquare.Core\GeniusSquare.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

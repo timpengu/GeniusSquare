@@ -1,8 +1,8 @@
-using GeniusSquare.Coords;
-using GeniusSquare.Game;
+using GeniusSquare.Core.Coords;
+using GeniusSquare.Core.Game;
 using FluentAssertions;
 
-namespace GeniusSquare.Tests
+namespace GeniusSquare.Core.Tests
 {
     [TestClass]
     public class OrientedPieceTests

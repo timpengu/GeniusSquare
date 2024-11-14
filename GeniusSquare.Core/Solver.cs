@@ -1,7 +1,6 @@
-﻿using GeniusSquare.Coords;
-using GeniusSquare.Game;
+﻿using GeniusSquare.Core.Game;
 
-namespace GeniusSquare;
+namespace GeniusSquare.Core;
 
 public static class Solver
 {

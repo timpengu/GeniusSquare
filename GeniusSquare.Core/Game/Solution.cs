@@ -1,4 +1,4 @@
-﻿namespace GeniusSquare.Game;
+﻿namespace GeniusSquare.Core.Game;
 
 public record struct Solution(IReadOnlyCollection<Placement> Placements)
 {

@@ -1,6 +1,6 @@
-﻿using GeniusSquare.Coords;
+﻿using GeniusSquare.Core.Coords;
 
-namespace GeniusSquare.Game;
+namespace GeniusSquare.Core.Game;
 
 public record struct Placement(OrientedPiece OrientedPiece, Coord Offset)
 {
