@@ -2,7 +2,7 @@
   "DefaultBoardSize": [ 6, 6 ],
 
   "AllowRotation": true,
-  "AllowReflection": true,
+  "AllowXReflection": true,
 
   "Pieces": [
     {

@@ -34,40 +34,25 @@ public static class ConfigExtensions
 
     private static Piece GeneratePiece(this Config config, ConfigPiece configPiece)
     {
-        string pieceName = configPiece.Name ?? String.Empty;
-
-        char rotationSuffix = 'a';
-        char reflectionSuffix = '\'';
-
-        string basePieceName = config.AllowRotation ? pieceName + rotationSuffix : pieceName;
-        OrientedPiece basePiece = new(basePieceName, configPiece.Positions.Select(ToCoord));
-
-        List<OrientedPiece> orientations = new() { basePiece };
+        var builder = PieceBuilder
+            .Create(configPiece.Name ?? "", configPiece.ConsoleColor)
+            .WithPositions(configPiece.Positions.Select(ToCoord));
 
         if (config.AllowRotation)
         {
-            OrientedPiece rotatedPiece = basePiece;
-            for (int rotation = 1; rotation < 4; ++rotation)
-            {
-                ++rotationSuffix; // label rotations 'a','b','c','d'
-                rotatedPiece = rotatedPiece.Rotate(pieceName + rotationSuffix);
-                orientations.Add(rotatedPiece);
-            }
+            builder.AddRotations();
         }
 
-        if (config.AllowReflection)
+        if (config.AllowXReflection)
         {
-            List<OrientedPiece> reflectedPieces = orientations
-                .Select(piece => piece.Reflect(piece.Name + reflectionSuffix))
-                .ToList();
-
-            orientations.AddRange(reflectedPieces);
+            builder.AddXReflections();
         }
 
-        return new Piece(
-            pieceName,
-            configPiece.ConsoleColor,
-            orientations.Distinct() // exclude duplicates due to symmetry (instances must be normalised)
-        );
+        if (config.AllowYReflection)
+        {
+            builder.AddYReflections();
+        }
+
+        return builder.BuildPiece();
     }
 }

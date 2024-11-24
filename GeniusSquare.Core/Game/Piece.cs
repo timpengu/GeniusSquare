@@ -1,20 +1,28 @@
 ﻿using GeniusSquare.Core.Coords;
 
 namespace GeniusSquare.Core.Game;
-public sealed record Piece
+
+public sealed class Piece
 {
-    public Piece(string name, ConsoleColor consoleColor, IEnumerable<OrientedPiece> orientations)
+    // TODO: Make constructor private/internal? Use factory method or InternalsVisibleTo for tests.
+    public Piece(string name, ConsoleColor consoleColor)
     {
         Name = name;
         ConsoleColor = consoleColor;
-        Orientations = orientations.ThrowIfEmpty().ToList();
-        Positions = Orientations.Select(o => o.Positions.Count).Distinct().Single(); // all orientations must have same number of positions
+    }
+
+    internal void AddOrientations(IEnumerable<OrientedPiece> orientations)
+    {
+        _orientations.AddRange(orientations.ThrowIfEmpty());
+        Positions = _orientations.Select(o => o.Positions.Count).Distinct().Single(); // all orientations must have same positions count
     }
 
     public string Name { get; }
     public ConsoleColor ConsoleColor { get; }
-    public int Positions { get; }
-    public IReadOnlyList<OrientedPiece> Orientations { get; }
+    public int Positions { get; private set; } = 0;
+
+    public IReadOnlyList<OrientedPiece> Orientations => _orientations;
+    private List<OrientedPiece> _orientations = new();
 
     public override string ToString() => Name;
 }

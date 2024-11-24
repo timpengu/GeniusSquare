@@ -10,16 +10,4 @@ public static class OrientedPieceExtensions
         placementEnd = Coord.Max(placementStart, placementEnd); // avoid negative range if piece is larger than board
         return new CoordRange(placementStart, placementEnd);
     }
-
-    public static OrientedPiece Reflect(this OrientedPiece piece, string? name = null) =>
-        new OrientedPiece(
-            name ?? piece.Name,
-            piece.Positions.Select(pos => new Coord(-pos.X, pos.Y))
-        );
-
-    public static OrientedPiece Rotate(this OrientedPiece piece, string? name = null) =>
-        new OrientedPiece(
-            name ?? piece.Name,
-            piece.Positions.Select(pos => new Coord(-pos.Y, pos.X))
-        );
 }

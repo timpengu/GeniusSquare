@@ -10,8 +10,8 @@ namespace GeniusSquare.Core.Tests
         [TestMethod]
         public void Equals_WithEqualPositions_IsTrue()
         {
-            var a = new OrientedPiece("A", [new(0, 0), new(0, 1), new(0, 2)]);
-            var b = new OrientedPiece("B", [new(0, 0), new(0, 1), new(0, 2)]);
+            OrientedPiece a = CreateOrientedPiece("A", new(0, 0), new(0, 1), new(0, 2));
+            OrientedPiece b = CreateOrientedPiece("B", new(0, 0), new(0, 1), new(0, 2));
 
             a.Equals(b).Should().BeTrue();
         }
@@ -19,8 +19,8 @@ namespace GeniusSquare.Core.Tests
         [TestMethod]
         public void GetHashCode_WithEqualPositions_ReturnsSame()
         {
-            var a = new OrientedPiece("A", [new(0, 0), new(0, 1), new(0, 2)]);
-            var b = new OrientedPiece("B", [new(0, 0), new(0, 1), new(0, 2)]);
+            OrientedPiece a = CreateOrientedPiece("A", new(0, 0), new(0, 1), new(0, 2));
+            OrientedPiece b = CreateOrientedPiece("B", new(0, 0), new(0, 1), new(0, 2));
 
             a.GetHashCode().Should().Be(b.GetHashCode());
         }
@@ -28,11 +28,16 @@ namespace GeniusSquare.Core.Tests
         [TestMethod]
         public void Distinct_WithEqualPositions_ReturnsSingle()
         {
-            var a = new OrientedPiece("A", [new(0, 0), new(0, 1), new(0, 2)]);
-            var b = new OrientedPiece("B", [new(0, 0), new(0, 1), new(0, 2)]);
+            OrientedPiece[] pieces =
+            {
+                CreateOrientedPiece("A", new(0, 0), new(0, 1), new(0, 2)),
+                CreateOrientedPiece("B", new(0, 0), new(0, 1), new(0, 2))
+            };
 
-            OrientedPiece[] pieces = { a, b };
             pieces.Distinct().Should().HaveCount(1);
         }
+
+        private static OrientedPiece CreateOrientedPiece(string name, params Coord[] positions) => new OrientedPiece(_piece, name, positions);
+        private static Piece _piece = new("Test", ConsoleColor.Black);
     }
 }

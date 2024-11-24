@@ -1,20 +1,26 @@
 ﻿using GeniusSquare.Core.Coords;
 
 namespace GeniusSquare.Core.Game;
-public sealed record OrientedPiece : IEquatable<OrientedPiece>
+public sealed class OrientedPiece : IEquatable<OrientedPiece>
 {
+    public Piece Piece { get; }
     public string Name { get; }
+
+    /// <summary>
+    /// The list of occupied positions (normalised for coordinate translation and ordering)
+    /// </summary>
     public IReadOnlyList<Coord> Positions { get; }
     public CoordRange Bounds { get; }
 
-    public OrientedPiece(string name, IEnumerable<Coord> positions)
+    // TODO: Make constructor private with factory method?
+    public OrientedPiece(Piece piece, string name, IEnumerable<Coord> positions)
     {
+        Piece = piece;
         Name = name;
         Positions = Normalise(positions).ToList();
         Bounds = Positions.GetBounds();
     }
 
-    // TODO: Allow denormalised instances and let caller normalise positions?
     private static IEnumerable<Coord> Normalise(IEnumerable<Coord> positions)
     {
         List<Coord> positionsList = positions.ToList(); // copy for multiple enumeration
@@ -24,6 +30,9 @@ public sealed record OrientedPiece : IEquatable<OrientedPiece>
             .Order(); // apply standard ordering
     }
 
+    /// <remarks>
+    /// OrientedPieces are considered equal iff they contain the same normalised positions (regardless of Piece or Name or coordinate translation)
+    /// </remarks>
     public bool Equals(OrientedPiece? other)
     {
         if (ReferenceEquals(other, null)) return false;

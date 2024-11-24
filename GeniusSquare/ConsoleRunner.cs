@@ -58,7 +58,7 @@ internal class ConsoleRunner
             if (_args.HasVerboseSolutions())
             {
                 Console.WriteLine($"\nSolution {solutionCount} @ {sw.Elapsed:hh\\:mm\\:ss\\.fff}");
-                ConsoleWriteColouredLayout(board, pieces, solution);
+                ConsoleWriteColouredLayout(board, solution);
             }
 
             if (_args.HasVerbosePlacements())
@@ -74,25 +74,15 @@ internal class ConsoleRunner
         return solutionCount > 0;
     }
 
-    private static void ConsoleWriteColouredLayout(Board board, IList<Piece> pieces, Solution solution)
+    private static void ConsoleWriteColouredLayout(Board board, Solution solution)
     {
-        Piece?[,] layout = new Piece?[board.XSize, board.YSize];
-
-        // TODO: Add back ref to Piece from OrientedPiece to access Piece properties for Placements
-        // HACK: Construct dictionary lookup of Piece per OrientedPiece
-        Dictionary<OrientedPiece, Piece> pieceDictionary = pieces
-            .SelectMany(
-                p => p.Orientations,
-                (p, op) => (Piece: p, OrientedPiece: op))
-            .ToDictionary(
-                p => p.OrientedPiece,
-                p => p.Piece);
+        Piece?[,] pieces = new Piece?[board.XSize, board.YSize];
 
         foreach (Placement placement in solution.Placements)
         {
             foreach (Coord pos in placement.Positions)
             {
-                layout[pos.X, pos.Y] = pieceDictionary[placement.OrientedPiece];
+                pieces[pos.X, pos.Y] = placement.OrientedPiece.Piece;
             }
         }
 
@@ -103,7 +93,7 @@ internal class ConsoleRunner
         {
             foreach (int x in board.Bounds.EnumerateX())
             {
-                Piece? piece = layout[x, y];
+                Piece? piece = pieces[x, y];
 
                 Console.BackgroundColor = piece?.ConsoleColor ?? ConsoleColor.Black;
                 Console.Write(piece?.Name ?? "..");

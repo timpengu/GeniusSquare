@@ -9,8 +9,9 @@ public sealed record Config
     
     public ConfigPiece[] Pieces { get; set; } = [];
 
-    public bool AllowRotation { get; set; } = true;
-    public bool AllowReflection { get; set; } = true;
+    public bool AllowRotation { get; set; } = false;
+    public bool AllowXReflection { get; set; } = false;
+    public bool AllowYReflection { get; set; } = false;
 
     public static Config Load(string configPath)
     {
