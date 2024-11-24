@@ -4,8 +4,7 @@ namespace GeniusSquare.Core.Game;
 
 public sealed class Piece
 {
-    // TODO: Make constructor private/internal? Use factory method or InternalsVisibleTo for tests.
-    public Piece(string name, ConsoleColor consoleColor)
+    internal Piece(string name, ConsoleColor consoleColor)
     {
         Name = name;
         ConsoleColor = consoleColor;

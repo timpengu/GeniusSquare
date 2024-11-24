@@ -5,15 +5,10 @@ public sealed class OrientedPiece : IEquatable<OrientedPiece>
 {
     public Piece Piece { get; }
     public string Name { get; }
-
-    /// <summary>
-    /// The list of occupied positions (normalised for coordinate translation and ordering)
-    /// </summary>
     public IReadOnlyList<Coord> Positions { get; }
     public CoordRange Bounds { get; }
 
-    // TODO: Make constructor private with factory method?
-    public OrientedPiece(Piece piece, string name, IEnumerable<Coord> positions)
+    internal OrientedPiece(Piece piece, string name, IEnumerable<Coord> positions)
     {
         Piece = piece;
         Name = name;

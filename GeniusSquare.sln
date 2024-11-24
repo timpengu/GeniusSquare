@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeniusSquare", "GeniusSquar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeniusSquare.Core.Tests", "GeniusSquare.Tests\GeniusSquare.Core.Tests.csproj", "{0B5DE746-1707-4368-98D0-0FBAD931B6F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeniusSquare.Core", "GeniusSquare.Core\GeniusSquare.Core.csproj", "{CC5544E2-B6DE-4740-A608-9969E241F49F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeniusSquare.Core", "GeniusSquare.Core\GeniusSquare.Core.csproj", "{CC5544E2-B6DE-4740-A608-9969E241F49F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
