@@ -14,7 +14,7 @@ namespace GeniusSquare.CommandLine
     // Played 2024-11-28 (4900 solutions)
     // -b 6 -o A1 B2 B4 D6 E6 F1 F2
 
-    internal sealed class Args
+    internal sealed class Options
     {
         [Option('b', Min = 1, HelpText = "Board size (takes one or two integer dimension parameters)")]
         public IEnumerable<int> BoardSize { get; set; } = [];
@@ -25,7 +25,7 @@ namespace GeniusSquare.CommandLine
         [Option('r', HelpText = "Number of positions occupied randomly")]
         public int? OccupiedRandoms { get; set; }
 
-        [Option('v', HelpText = "Verbose mode, outputs individual solutions")]
-        public bool Verbose { get; set; }
+        [Option('v', FlagCounter = true, HelpText = "Verbosity level, outputs individual solutions")]
+        public int Verbosity { get; set; } = 0;
     }
 }

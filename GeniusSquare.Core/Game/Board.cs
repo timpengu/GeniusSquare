@@ -54,7 +54,11 @@ public sealed record Board
         {
             foreach (int x in Bounds.EnumerateX())
             {
-                if (x == Bounds.Start.X && y != Bounds.Start.Y)
+                if (x != Bounds.Start.X)
+                {
+                    sb.Append(' ');
+                }
+                else if (y != Bounds.Start.Y)
                 {
                     sb.AppendLine();
                 }

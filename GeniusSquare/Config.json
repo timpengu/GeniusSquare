@@ -8,6 +8,7 @@
     {
       // ⬛
       "Name": "O1",
+      "ConsoleColor": "Blue",
       "Positions": [
         [ 0, 0 ]
       ]
@@ -15,6 +16,7 @@
     {
       // ⬛ ⬛
       "Name": "I2",
+      "ConsoleColor": "DarkRed", // Brown
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ]
@@ -23,6 +25,7 @@
     {
       // ⬛ ⬛ ⬛
       "Name": "I3",
+      "ConsoleColor": "DarkYellow", // Orange
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -33,6 +36,7 @@
       // ⬛
       // ⬛ ⬛
       "Name": "J3",
+      "ConsoleColor": "DarkMagenta", // Purple
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -42,6 +46,7 @@
     {
       // ⬛ ⬛ ⬛ ⬛
       "Name": "I4",
+      "ConsoleColor": "DarkGray",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -53,6 +58,7 @@
       // ⬛
       // ⬛ ⬛ ⬛
       "Name": "J4",
+      "ConsoleColor": "Cyan",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -64,6 +70,7 @@
       // ⬛ ⬛
       // ⬛ ⬛
       "Name": "O4",
+      "ConsoleColor": "DarkGreen",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -75,6 +82,7 @@
       //   ⬛
       // ⬛ ⬛ ⬛
       "Name": "T4",
+      "ConsoleColor": "Yellow",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],
@@ -86,6 +94,7 @@
       //   ⬛ ⬛
       // ⬛ ⬛
       "Name": "S4",
+      "ConsoleColor": "Red",
       "Positions": [
         [ 0, 0 ],
         [ 1, 0 ],

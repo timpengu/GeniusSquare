@@ -66,6 +66,7 @@ public static class ConfigExtensions
 
         return new Piece(
             pieceName,
+            configPiece.ConsoleColor,
             orientations.Distinct() // exclude duplicates due to symmetry (instances must be normalised)
         );
     }

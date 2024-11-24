@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GeniusSquare.Configuration;
 
@@ -15,7 +16,11 @@ public sealed record Config
     {
         string json = File.ReadAllText(configPath);
 
-        JsonSerializerOptions options = new() { ReadCommentHandling = JsonCommentHandling.Skip };
+        JsonSerializerOptions options = new()
+        {
+            Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
+            ReadCommentHandling = JsonCommentHandling.Skip,
+        };
         Config? config = JsonSerializer.Deserialize<Config>(json, options);
 
         return config ?? throw new Exception($"Failed to deserialize {nameof(Config)}");
