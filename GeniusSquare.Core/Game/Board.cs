@@ -33,7 +33,7 @@ public sealed record Board
     public bool IsOccupied(Placement placement) => placement.Positions.Any(IsOccupied);
     public bool IsOccupied(Coord position) => _occupation[position.X, position.Y];
 
-    public Board WithOccupied(IEnumerable<Coord> positions) => new Board(_placements, WithOccupation(positions));
+    public Board WithOccupiedPositions(IEnumerable<Coord> positions) => new Board(_placements, WithOccupation(positions));
     public Board WithPlacement(Placement placement) => new Board(_placements.Append(placement), WithOccupation(placement.Positions));
 
     private bool[,] WithOccupation(IEnumerable<Coord> positions)

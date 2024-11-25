@@ -1,4 +1,5 @@
-﻿using GeniusSquare.Core.Game;
+﻿using GeniusSquare.Core.Coords;
+using GeniusSquare.Core.Game;
 
 namespace GeniusSquare.Core;
 
@@ -38,9 +39,18 @@ public static class Solver
             .SelectMany(board.GetPlacements);
 
     private static IEnumerable<Placement> GetPlacements(this Board board, OrientedPiece orientedPiece)
-        => orientedPiece
-            .GetPlacementRange(board) // get coord range of possible placement positions
+        => board
+            .GetPlacementRange(orientedPiece) // get coord range of possible placement positions
             .EnumerateCoords()
             .Select(coord => new Placement(orientedPiece, coord))
             .Where(placement => !board.IsOccupied(placement)); // exclude occupied positions
+
+    private static CoordRange GetPlacementRange(this Board board, OrientedPiece piece)
+    {
+        Coord placementStart = board.Bounds.Start - piece.Bounds.Start;
+        Coord placementEnd = board.Bounds.End - piece.Bounds.End + new Coord(1, 1); // use exclusive range end
+        placementEnd = Coord.Max(placementStart, placementEnd); // avoid negative range if piece is larger than board
+        return new CoordRange(placementStart, placementEnd);
+    }
+
 }

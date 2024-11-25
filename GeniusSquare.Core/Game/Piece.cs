@@ -1,6 +1,4 @@
-﻿using GeniusSquare.Core.Coords;
-
-namespace GeniusSquare.Core.Game;
+﻿namespace GeniusSquare.Core.Game;
 
 public sealed class Piece
 {

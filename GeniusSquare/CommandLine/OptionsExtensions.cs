@@ -56,10 +56,10 @@ namespace GeniusSquare.CommandLine
             // Create board with specified occupied positions
             var board = Board
                 .Create(boardSize)
-                .WithOccupied(occupiedPositions);
+                .WithOccupiedPositions(occupiedPositions);
 
             // Add random occupied positions to board
-            board = board.WithOccupied(
+            board = board.WithOccupiedPositions(
                 board.Bounds
                     .EnumerateCoords()
                     .Where(coord => !board.IsOccupied(coord))

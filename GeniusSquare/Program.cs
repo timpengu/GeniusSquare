@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using CommandLine.Text;
 using GeniusSquare.CommandLine;
+using GeniusSquare.Configuration;
 
 namespace GeniusSquare;
 public class Program
@@ -13,9 +14,11 @@ public class Program
 
             ParserResult<Options> parserResult = ParseArgs(args);
             parserResult
-                .WithParsed(opts =>
+                .WithParsed(options =>
                 {
-                    var runner = new ConsoleRunner(opts.Validate());
+                    options.Validate();
+                    var config = Config.Load("Config.json"); // TODO: Add config file path to options
+                    var runner = new ConsoleRunner(config, options);
                     success = runner.Run();
                 })
                 .WithNotParsed(errors =>
