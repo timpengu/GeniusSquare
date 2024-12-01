@@ -28,5 +28,33 @@ public record struct CoordRange(Coord Start, Coord End)
         return Enumerable.Range(start, end - start);
     }
 
-    public override string ToString() => $"[{Start},{End}]";
+    public static CoordRange Parse(string s) =>
+        TryParse(s, out CoordRange range)
+        ? range
+        : throw new FormatException($"Invalid {nameof(CoordRange)} string '{s}'");
+
+    public static bool TryParse(string s, out CoordRange range)
+    {
+        s = s.Trim(); // Ignore leading and trailing whitespace
+
+        if (s.Length > 0 && s[0] == '[' && s[^1] == ']')
+        {
+            s = s[1..^1]; // Ignore optional enclosing parentheses
+        }
+
+        string[] components = s.Split("..", 3);
+
+        if (components.Length == 2 &&
+            Coord.TryParse(components[0], out Coord start) &&
+            Coord.TryParse(components[1], out Coord end))
+        {
+            range = new CoordRange(start, end);
+            return true;
+        }
+
+        range = default;
+        return false;
+    }
+
+    public override string ToString() => $"[{Start}..{End}]";
 }

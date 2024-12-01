@@ -46,7 +46,7 @@ namespace GeniusSquare.CommandLine
                 ?? throw new OptionsException($"Missing {nameof(Options.BoardSize)} option and {nameof(Config.DefaultBoardSize)} config.");
 
             // Get distinct occupied positions from args
-            ISet<Coord> occupiedPositions = opts.OccupiedIndexes.ToCoords().ToHashSet();
+            ISet<Coord> occupiedPositions = opts.OccupiedPositions.Select(Coord.Parse).ToHashSet();
 
             // Get number of remaining positions to occupy randomly
             int piecePositions = pieces.Sum(p => p.Positions);

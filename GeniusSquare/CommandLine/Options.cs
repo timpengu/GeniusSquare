@@ -19,8 +19,8 @@ namespace GeniusSquare.CommandLine
         [Option('b', Min = 1, HelpText = "Board size (takes one or two integer dimension parameters)")]
         public IEnumerable<int> BoardSize { get; set; } = [];
 
-        [Option('o', HelpText = "Occupied position indexes (e.g. A1 B2 ...)")]
-        public IEnumerable<string> OccupiedIndexes { get; set; } = [];
+        [Option('o', HelpText = "Occupied positions (e.g. A1 B2 ...)")]
+        public IEnumerable<string> OccupiedPositions { get; set; } = [];
 
         [Option('r', HelpText = "Number of positions occupied randomly")]
         public int? OccupiedRandoms { get; set; }

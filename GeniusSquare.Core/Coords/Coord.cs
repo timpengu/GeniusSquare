@@ -1,4 +1,7 @@
-﻿namespace GeniusSquare.Core.Coords;
+﻿using System;
+using System.Text.RegularExpressions;
+
+namespace GeniusSquare.Core.Coords;
 public record struct Coord(int X, int Y) : IComparable<Coord>
 {
     public static Coord Zero = new(0, 0); // default
@@ -22,6 +25,63 @@ public record struct Coord(int X, int Y) : IComparable<Coord>
         if (compareY != 0) return compareY;
 
         return 0;
+    }
+
+    public static Coord Parse(string s) =>
+        TryParse(s, out Coord coord)
+        ? coord
+        : throw new FormatException($"Invalid {nameof(Coord)} string '{s}'");
+
+    public static bool TryParse(string s, out Coord coord) =>
+        TryParseComponents(s, out coord) ||
+        TryParseIndex(s, out coord);
+
+    private static bool TryParseComponents(string s, out Coord coord)
+    {
+        s = s.Trim(); // Ignore leading and trailing whitespace
+
+        if (s.Length > 0 && s[0] == '(' && s[^1] == ')')
+        {
+            s = s[1..^1]; // Ignore optional enclosing parentheses
+        }
+
+        string[] components = s.Split(',', 3);
+
+        if (components.Length == 2 &&
+            int.TryParse(components[0], out int x) &&
+            int.TryParse(components[1], out int y))
+        {
+            coord = new Coord(x, y);
+            return true;
+        }
+
+        coord = default;
+        return false;
+    }
+
+    private static bool TryParseIndex(string s, out Coord coord)
+    {
+        s = s.Trim().ToUpper(); // Ignore leading/trailing whitespace and case
+
+        // TODO: Support base-26 alphabetic y-components beyond row Z? 
+        var match = Regex.Match(s, @"^([A-Z])([0-9]+)$");
+        
+        if (match.Success)
+        {
+            (string yComponent, string xComponent) = (match.Groups[1].Value, match.Groups[2].Value);
+
+            if (int.TryParse(xComponent, out int xIndex))
+            {
+                int y = yComponent.Single() - 'A'; // A-based alphabetic index
+                int x = xIndex - 1; // 1-based numeric index
+
+                coord = new Coord(x, y);
+                return true;
+            }
+        }
+
+        coord = default;
+        return false;
     }
 
     public override string ToString() => $"({X},{Y})";

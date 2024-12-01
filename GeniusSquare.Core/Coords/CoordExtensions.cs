@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
-
-namespace GeniusSquare.Core.Coords;
+﻿namespace GeniusSquare.Core.Coords;
 
 public static class CoordExtensions
 {
@@ -29,16 +26,4 @@ public static class CoordExtensions
                     Coord.Max(range.End, coord + new Coord(1, 1)) // use exclusive range end
                 ));
 
-    public static IEnumerable<Coord> ToCoords(this IEnumerable<string> indexes) => indexes.Select(ToCoord);
-    public static Coord ToCoord(this string index)
-    {
-        var match = Regex.Match(index, @"^([a-zA-Z])([0-9]+)$");
-        if (!match.Success)
-            throw new FormatException($"Invalid index string '{index}'");
-
-        int x = Int32.Parse(match.Groups[2].Value) - 1; // 1-based numeric index
-        int y = match.Groups[1].Value.ToUpper().Single() - 'A'; // A-based alphabetic index
-
-        return new Coord(x, y);
-    }
 }

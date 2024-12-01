@@ -41,9 +41,19 @@ public sealed record Board
         bool[,] occupation = (bool[,])_occupation.Clone();
         foreach (Coord position in positions)
         {
+            Validate(position);
             occupation[position.X, position.Y] = true;
         }
         return occupation;
+    }
+
+    private void Validate(Coord position)
+    {
+        if (position.X < 0 || position.X >= XSize ||
+            position.Y < 0 || position.Y >= YSize)
+        {
+            throw new IndexOutOfRangeException($"Position {position} is outside board bounds {Bounds}");
+        }
     }
 
     public override string ToString()
