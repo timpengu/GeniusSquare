@@ -32,8 +32,8 @@ public sealed class PieceBuilder
     }
 
     public PieceBuilder AddRotations() =>
-        // TODO: replace existing orientations with 'a' suffix to indicate 0-degree rotation
-        AddTransformations(orientation => [
+        ReplaceWithTransformations(orientation => [
+            orientation.Transform('a', coord => coord),
             orientation.Transform('b', coord => coord.Rotate90()),
             orientation.Transform('c', coord => coord.Rotate180()),
             orientation.Transform('d', coord => coord.Rotate270())
@@ -49,10 +49,16 @@ public sealed class PieceBuilder
             orientation.Transform('y', coord => coord.ReflectY())
         ]);
 
+    private PieceBuilder ReplaceWithTransformations(Func<Orientation, IEnumerable<Orientation>> transformations)
+    {
+        _orientations = _orientations.SelectMany(transformations).ToList();
+        return this;
+    }
+
     private PieceBuilder AddTransformations(Func<Orientation, IEnumerable<Orientation>> transformations)
     {
-        var rotatedOrientations = _orientations.SelectMany(transformations).ToList();
-        _orientations.AddRange(rotatedOrientations);
+        var newOrientations = _orientations.SelectMany(transformations).ToList();
+        _orientations.AddRange(newOrientations);
         return this;
     }
 
