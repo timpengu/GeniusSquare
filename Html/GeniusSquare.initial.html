@@ -3,6 +3,25 @@
 <head>
     <title>Genius Square</title>
     <style>
+        .title {
+            display: flex;
+            align-items: left;
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight: bold;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            color: black;
+        }
+        .solution {
+            display: flex;
+            align-items: left;
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: black;
+        }
         .grid {
             display: grid;
             width: 500px;
@@ -10,23 +29,32 @@
             grid-template-columns: repeat(7, 1fr);
             grid-template-rows: repeat(7, 1fr);
             gap: 2px;
-            padding: 20px;
-            padding-right: 80px;
-            padding-bottom: 80px;
+            padding: 10px;
+            padding-right: 50px;
+            padding-bottom: 50px;
+            margin-bottom: 20px;
+            background-color: black;
+
+        }
+        .space {
+            display: flex;
+            aspect-ratio: 1/1;
+            border-radius: 1px;
+            box-shadow: inset 1px 1px 5px #202020, inset -1px -1px 5px #606060;
             background-color: black;
         }
         .block {
             display: flex;
             aspect-ratio: 1/1;
             border-radius: 5px;
-            box-shadow: inset -1px -1px 5px black, inset 1px 1px 5px white
+            box-shadow: inset -1px -1px 5px black, inset 1px 1px 5px white;
         }
-        .space {
+        .peg {
             display: flex;
             aspect-ratio: 1/1;
             border-radius: 50%;
-            background-color: burlywood;
             box-shadow: inset -1px -1px 5px black, inset 1px 1px 5px white;
+            background-color: burlywood;
         }
         .axis {
             display: flex;
@@ -68,6 +96,7 @@
     </style>
 </head>
 <body>
+    <div class="title">Initial board state:</div>
     <div class="grid">
 
         <div class="axis"></div>
@@ -79,52 +108,52 @@
         <div class="axis">6</div>
 
         <div class="axis">A</div>
+        <div class="peg"></div>
         <div class="space"></div>
-        <div class="block j3"></div>
-        <div class="block j3"></div>
-        <div class="block i3"></div>
-        <div class="block i3"></div>
-        <div class="block i3"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
 
         <div class="axis">B</div>
-        <div class="block j4"></div>
         <div class="space"></div>
-        <div class="block j3"></div>
+        <div class="peg"></div>
         <div class="space"></div>
-        <div class="block t4"></div>
-        <div class="block i2"></div>
+        <div class="peg"></div>
+        <div class="space"></div>
+        <div class="space"></div>
 
         <div class="axis">C</div>
-        <div class="block j4"></div>
-        <div class="block j4"></div>
-        <div class="block j4"></div>
-        <div class="block t4"></div>
-        <div class="block t4"></div>
-        <div class="block i2"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
         
         <div class="axis">D</div>
-        <div class="block o4"></div>
-        <div class="block o4"></div>
-        <div class="block s4"></div>
-        <div class="block s4"></div>
-        <div class="block t4"></div>
         <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="peg"></div>
 
         <div class="axis">E</div>
-        <div class="block o4"></div>
-        <div class="block o4"></div>
-        <div class="block o1"></div>
-        <div class="block s4"></div>
-        <div class="block s4"></div>
         <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="peg"></div>
 
         <div class="axis">F</div>
+        <div class="peg"></div>
+        <div class="peg"></div>
         <div class="space"></div>
         <div class="space"></div>
-        <div class="block i4"></div>
-        <div class="block i4"></div>
-        <div class="block i4"></div>
-        <div class="block i4"></div>
+        <div class="space"></div>
+        <div class="space"></div>
 
     </div>
 </body>
