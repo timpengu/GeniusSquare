@@ -25,7 +25,10 @@ namespace GeniusSquare.CommandLine
         [Option('r', HelpText = "Number of positions occupied randomly")]
         public int? OccupiedRandoms { get; set; }
 
-        [Option('v', FlagCounter = true, HelpText = "Verbosity level, outputs individual solutions")]
+        [Option('h', HelpText = "Output HTML to given file name")]
+        public string? HtmlFileName { get; set; } 
+
+        [Option('v', FlagCounter = true, HelpText = "Console verbosity level")]
         public int Verbosity { get; set; } = 0;
     }
 }

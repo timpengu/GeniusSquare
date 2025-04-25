@@ -1,49 +1,21 @@
 ﻿using GeniusSquare.CommandLine;
-using GeniusSquare.Configuration;
-using GeniusSquare.Core;
 using GeniusSquare.Core.Coords;
 using GeniusSquare.Core.Game;
-using System.Diagnostics;
 
-namespace GeniusSquare;
+namespace GeniusSquare.Output;
 
-internal class ConsoleRunner
+internal class ConsoleWriter : IOutputWriter
 {
-    private readonly Config _config;
-    private readonly Options _options;
+    private readonly bool _writeSolutions;
+    private readonly bool _writePlacements;
 
-    public ConsoleRunner(Config config, Options options)
+    public ConsoleWriter(Options options)
     {
-        _config = config;
-        _options = options;
+        _writeSolutions = options.HasVerboseSolutions();
+        _writePlacements = options.HasVerbosePlacements();
     }
 
-    public bool Run()
-    {
-        IReadOnlyCollection<Piece> pieces = _config.GeneratePieces().ToList();
-        Board board = _options.GenerateBoard(_config, pieces);
-
-        ConsoleWriteInitialState(board, pieces);
-
-        Stopwatch sw = new();
-        sw.Start();
-
-        int solutionCount = 0;
-        foreach (Solution solution in Solver.GetSolutions(board, pieces))
-        {
-            ++solutionCount;
-
-            ConsoleWriteSolution(board, solution, solutionCount, sw.Elapsed);
-        }
-
-        sw.Stop();
-
-        ConsoleWriteSolutionsSummary(solutionCount, sw.Elapsed);
-
-        return solutionCount > 0;
-    }
-
-    private void ConsoleWriteInitialState(Board board, IReadOnlyCollection<Piece> pieces)
+    public void WriteInitialState(Board board, IReadOnlyCollection<Piece> pieces)
     {
         int boardPositions = board.Bounds.EnumerateCoords().Count(coord => !board.IsOccupied(coord));
         int piecePositions = pieces.Sum(p => p.Positions);
@@ -70,36 +42,28 @@ internal class ConsoleRunner
         Console.WriteLine($"Board is {constraint} constrained.");
     }
 
-    private void ConsoleWriteSolution(Board board, Solution solution, int solutionCount, TimeSpan elapsed)
+    public void WriteSolution(Board board, Solution solution, int solutionCount, TimeSpan elapsed)
     {
-        if (_options.HasVerboseSolutions())
+        if (_writeSolutions)
         {
             Console.WriteLine($"\nSolution {solutionCount} @ {elapsed:hh\\:mm\\:ss\\.fff}");
             ConsoleWriteColouredLayout(board, solution);
         }
 
-        if (_options.HasVerbosePlacements())
+        if (_writePlacements)
         {
-            Console.WriteLine(String.Join('\n', solution.Placements));
+            Console.WriteLine(string.Join('\n', solution.Placements));
         }
     }
 
-    private void ConsoleWriteSolutionsSummary(int solutionCount, TimeSpan elapsed)
+    public void WriteSummary(int solutionCount, TimeSpan elapsed)
     {
         Console.WriteLine($"\nFound {solutionCount} solution{(solutionCount == 1 ? "" : "s")} in {elapsed:hh\\:mm\\:ss\\.fff}.");
     }
 
     private void ConsoleWriteColouredLayout(Board board, Solution solution)
     {
-        Piece?[,] pieces = new Piece?[board.XSize, board.YSize];
-
-        foreach (Placement placement in solution.Placements)
-        {
-            foreach (Coord pos in placement.Positions)
-            {
-                pieces[pos.X, pos.Y] = placement.OrientedPiece.Piece;
-            }
-        }
+        Piece?[,] pieces = board.GetLayout(solution);
 
         Console.ForegroundColor = ConsoleColor.White;
         Console.BackgroundColor = ConsoleColor.Black;
@@ -117,5 +81,9 @@ internal class ConsoleRunner
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine();
         }
+    }
+
+    public void Flush()
+    {
     }
 }

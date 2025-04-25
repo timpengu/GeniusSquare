@@ -18,6 +18,9 @@ namespace GeniusSquare.CommandLine
             if (opts.OccupiedRandoms.HasValue && opts.OccupiedRandoms < 0)
                 throw new OptionsException($"{nameof(Options.OccupiedRandoms)} must be positive.");
 
+            if (opts.HtmlFileName != null && opts.HtmlFileName.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
+                throw new OptionsException($"{nameof(Options.HtmlFileName)} must be a valid file path.");
+
             if (opts.Verbosity < 0)
                 throw new OptionsException($"{nameof(Options.Verbosity)} cannot be negative.");
 

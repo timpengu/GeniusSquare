@@ -18,7 +18,7 @@ public class Program
                 {
                     options.Validate();
                     var config = Config.Load("Config.json"); // TODO: Add config file path to options
-                    var runner = new ConsoleRunner(config, options);
+                    var runner = new Runner(config, options);
                     success = runner.Run();
                 })
                 .WithNotParsed(errors =>
