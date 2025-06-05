@@ -1,5 +1,5 @@
 
-http://geniusSquare/config/{Config=default}
+http://geniusSquare/config/{ConfigId=default}
 {
 	string Id
 	Coord BoardSize
@@ -12,7 +12,7 @@ http://geniusSquare/pieces
 	...
 ]
 
-http://geniusSquare/pieces/{Piece}
+http://geniusSquare/pieces/{PieceId}
 {
 	string Id
 	string ConsoleColor
@@ -20,13 +20,14 @@ http://geniusSquare/pieces/{Piece}
 	Coord[] Positions
 }
 
-http://geniusSquare/pieces/{Piece}/{Orientation}
+http://geniusSquare/pieces/{PieceId}/{OrientationId}
 {
-	string Id
+	string PieceId
+	string OrientationId
 	Coord[] Positions
 }
 
-http://geniusSquare/solutions/{Config=default}
+http://geniusSquare/solutions/{ConfigId=default}
 	?occpos=A2,B2
 	&occrnd=3
 	&skip=30
@@ -35,7 +36,7 @@ http://geniusSquare/solutions/{Config=default}
 	...
 ]
 
-http://geniusSquare/solutions/{Config=default}/{Index}
+http://geniusSquare/solutions/{ConfigId=default}/{Index}
 {
 	int Index
 	string ConfigId
@@ -51,6 +52,6 @@ http://geniusSquare/solutions/{Config=default}/{Index}
 	]
 }
 
-http://geniusSquare/solutions/{Config=default}?count=true
+http://geniusSquare/solutions/{ConfigId=default}?count=true
 300
 

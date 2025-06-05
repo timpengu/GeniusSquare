@@ -1,6 +1,17 @@
 ﻿@GeniusSquare.WebAPI_HostAddress = https://localhost:7259
 
-@id=default
-GET {{GeniusSquare.WebAPI_HostAddress}}/config/{{id}}
+@configId=default
+@pieceId=J4
+
+GET {{GeniusSquare.WebAPI_HostAddress}}/config/{{configId}}
 
 ###
+
+GET {{GeniusSquare.WebAPI_HostAddress}}/pieces
+
+###
+
+GET {{GeniusSquare.WebAPI_HostAddress}}/pieces/{{pieceId}}
+
+###
+
