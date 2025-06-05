@@ -1,9 +1,6 @@
 ﻿{
   "DefaultBoardSize": [ 6, 6 ],
-
-  "AllowRotation": true,
-  "AllowXReflection": true,
-
+  "Transformation": "RotateReflect",
   "Pieces": [
     {
       // ⬛

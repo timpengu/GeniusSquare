@@ -39,12 +39,12 @@ public sealed class PieceBuilder
             orientation.Transform('d', coord => coord.Rotate270())
         ]);
 
-    public PieceBuilder AddXReflections() =>
+    public PieceBuilder AddReflectionsX() =>
         AddTransformations(orientation => [
             orientation.Transform('x', coord => coord.ReflectX())
         ]);
 
-    public PieceBuilder AddYReflections() =>
+    public PieceBuilder AddReflectionsY() =>
         AddTransformations(orientation => [
             orientation.Transform('y', coord => coord.ReflectY())
         ]);

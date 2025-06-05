@@ -21,7 +21,7 @@ public static class ConfigExtensions
             Piece piece;
             try
             {
-                piece = config.GeneratePiece(configPiece);
+                piece = configPiece.GeneratePiece(config.Transformation);
             }
             catch (Exception e)
             {
@@ -32,25 +32,25 @@ public static class ConfigExtensions
         }
     }
 
-    private static Piece GeneratePiece(this Config config, ConfigPiece configPiece)
+    private static Piece GeneratePiece(this ConfigPiece configPiece, Transformation transformation)
     {
         var builder = PieceBuilder
             .Create(configPiece.Name ?? "", configPiece.ConsoleColor)
             .WithPositions(configPiece.Positions.Select(ToCoord));
 
-        if (config.AllowRotation)
+        if (transformation.HasFlag(Transformation.Rotate))
         {
             builder.AddRotations();
         }
 
-        if (config.AllowXReflection)
+        if (transformation.HasFlag(Transformation.ReflectX))
         {
-            builder.AddXReflections();
+            builder.AddReflectionsX();
         }
 
-        if (config.AllowYReflection)
+        if (transformation.HasFlag(Transformation.ReflectY))
         {
-            builder.AddYReflections();
+            builder.AddReflectionsY();
         }
 
         return builder.BuildPiece();

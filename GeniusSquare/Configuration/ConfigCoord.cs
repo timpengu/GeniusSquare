@@ -1,6 +1,4 @@
-﻿using GeniusSquare.Core.Coords;
-
-namespace GeniusSquare.Configuration;
+﻿namespace GeniusSquare.Configuration;
 
 public sealed class ConfigCoord : List<int>
 {
