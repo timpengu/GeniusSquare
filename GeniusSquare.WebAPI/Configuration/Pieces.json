@@ -1,0 +1,108 @@
+﻿[
+  {
+    // ⬛
+    "Id": "O1",
+    "ConsoleColor": "Blue",
+    "HtmlColor": "#0f20d9",
+    "Positions": [
+      [ 0, 0 ]
+    ]
+  },
+  {
+    // ⬛ ⬛
+    "Id": "I2",
+    "ConsoleColor": "DarkRed", // Brown
+    "HtmlColor": "#9e6523",
+    "Positions": [
+      [ 0, 0 ],
+      [ 1, 0 ]
+    ]
+  },
+  {
+    // ⬛ ⬛ ⬛
+    "Id": "I3",
+    "ConsoleColor": "DarkYellow", // Orange
+    "HtmlColor": "#ff8000",
+    "Positions": [
+      [ 0, 0 ],
+      [ 1, 0 ],
+      [ 2, 0 ]
+    ]
+  },
+  {
+    // ⬛
+    // ⬛ ⬛
+    "Id": "J3",
+    "ConsoleColor": "DarkMagenta", // Purple
+    "HtmlColor": "#aa22aa",
+    "Positions": [
+      [ 0, 0 ],
+      [ 1, 0 ],
+      [ 0, 1 ]
+    ]
+  },
+  {
+    // ⬛ ⬛ ⬛ ⬛
+    "Id": "I4",
+    "ConsoleColor": "DarkGray",
+    "HtmlColor": "#777777",
+    "Positions": [
+      [ 0, 0 ],
+      [ 1, 0 ],
+      [ 2, 0 ],
+      [ 3, 0 ]
+    ]
+  },
+  {
+    // ⬛
+    // ⬛ ⬛ ⬛
+    "Id": "J4",
+    "ConsoleColor": "Cyan",
+    "HtmlColor": "#00b3ff",
+    "Positions": [
+      [ 0, 0 ],
+      [ 1, 0 ],
+      [ 2, 0 ],
+      [ 0, 1 ]
+    ]
+  },
+  {
+    // ⬛ ⬛
+    // ⬛ ⬛
+    "Id": "O4",
+    "ConsoleColor": "DarkGreen",
+    "HtmlColor": "#007500",
+    "Positions": [
+      [ 0, 0 ],
+      [ 1, 0 ],
+      [ 0, 1 ],
+      [ 1, 1 ]
+    ]
+  },
+  {
+    //   ⬛
+    // ⬛ ⬛ ⬛
+    "Id": "T4",
+    "ConsoleColor": "Yellow",
+    "HtmlColor": "#f0f000",
+    "Positions": [
+      [ 0, 0 ],
+      [ 1, 0 ],
+      [ 2, 0 ],
+      [ 1, 1 ]
+    ]
+  },
+  {
+    //   ⬛ ⬛
+    // ⬛ ⬛
+    "Id": "S4",
+    "ConsoleColor": "Red",
+    "HtmlColor": "#e00101",
+    "Positions": [
+      [ 0, 0 ],
+      [ 1, 0 ],
+      [ 1, 1 ],
+      [ 2, 1 ]
+    ]
+  }
+]

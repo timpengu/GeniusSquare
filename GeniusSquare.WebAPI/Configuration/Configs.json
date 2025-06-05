@@ -1,0 +1,8 @@
+﻿[
+  {
+    "Id": "default",
+    "BoardSize": [ 6, 6 ],
+    "Transformation": "RotateReflect",
+    "Pieces": [ "O1", "I2", "I3", "J3", "I4", "J4", "O4", "T4", "S4" ]
+  }
+]

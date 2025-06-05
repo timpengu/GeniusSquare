@@ -1,5 +1,7 @@
 
 using GeniusSquare.WebAPI.Model;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace GeniusSquare.WebAPI;
 
@@ -35,19 +37,26 @@ public static class Program
     private static void AddServices(this IServiceCollection services)
     {
         services.AddSingleton<IDictionary<string, Config>>(
-            LoadConfigs()
-            .ToDictionary(config => config.Id));
+            LoadConfigs().ToDictionary(config => config.Id));
+
+        services.AddSingleton<IDictionary<string, Piece>>(
+            LoadPieces().ToDictionary(piece => piece.Id));
     }
 
-    private static IEnumerable<Config> LoadConfigs()
+    private static IEnumerable<Config> LoadConfigs() => LoadJson<Config[]>("Configuration/Configs.json");
+    private static IEnumerable<Piece> LoadPieces() => LoadJson<Piece[]>("Configuration/Pieces.json");
+
+    // TODO: Share LoadJson() implementation with GeniusSquare.Configuration.Config.Load()
+    private static T LoadJson<T>(string path)
     {
-        // TODO: load default config from file
-        yield return new Config
-        {
-            Id = Config.DefaultId,
-            BoardSize = new(6, 6),
-            Transformation = Transformation.RotateReflect,
-            Pieces = { "O1", "I2", "I3", "J3", "I4", "J4", "O4", "T4", "S4" }
-        };
+        string json = File.ReadAllText(path);
+        return JsonSerializer.Deserialize<T>(json, _jsonSerializerOptions)
+            ?? throw new Exception($"Failed to deserialize {typeof(T).Name}");
     }
+
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
+        ReadCommentHandling = JsonCommentHandling.Skip,
+    };
 }

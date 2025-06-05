@@ -1,5 +1,10 @@
-﻿namespace GeniusSquare.WebAPI.Model;
+﻿using GeniusSquare.WebAPI.Model.Serialization;
+using System.Text.Json.Serialization;
 
-public record Coord(int X, int Y)
+namespace GeniusSquare.WebAPI.Model;
+
+[JsonConverter(typeof(CoordArrayJsonConverter))]
+public record struct Coord(int X, int Y)
 {
+    public static implicit operator Coord((int X, int Y) value) => new Coord(value.X, value.Y);
 }

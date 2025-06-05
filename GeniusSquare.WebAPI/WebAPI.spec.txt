@@ -17,6 +17,7 @@ http://geniusSquare/pieces/{Piece}
 	string Id
 	string ConsoleColor
 	string HtmlColor
+	Coord[] Positions
 }
 
 http://geniusSquare/pieces/{Piece}/{Orientation}
