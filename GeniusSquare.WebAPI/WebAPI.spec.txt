@@ -1,0 +1,55 @@
+
+http://geniusSquare/config/{Config=default}
+{
+	string Id
+	Coord BoardSize
+	string Transformation
+	string[] Pieces
+}
+
+http://geniusSquare/pieces
+[ // Piece[]
+	...
+]
+
+http://geniusSquare/pieces/{Piece}
+{
+	string Id
+	string ConsoleColor
+	string HtmlColor
+}
+
+http://geniusSquare/pieces/{Piece}/{Orientation}
+{
+	string Id
+	Coord[] Positions
+}
+
+http://geniusSquare/solutions/{Config=default}
+	?occpos=A2,B2
+	&occrnd=3
+	&skip=30
+	&top=10
+[ // Solution[]
+	...
+]
+
+http://geniusSquare/solutions/{Config=default}/{Index}
+{
+	int Index
+	string ConfigId
+	Coord[] OccupiedPositions
+	Placement[] Placements =
+	[
+		{
+			string PieceId
+			string OrientaionId
+			Coord Offset
+		},
+		...
+	]
+}
+
+http://geniusSquare/solutions/{Config=default}?count=true
+300
+
