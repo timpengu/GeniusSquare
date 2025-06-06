@@ -1,4 +1,4 @@
-using GeniusSquare.WebAPI.Model;
+using GeniusSquare.WebAPI.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeniusSquare.WebAPI.Controllers;
@@ -7,27 +7,29 @@ namespace GeniusSquare.WebAPI.Controllers;
 [Route("pieces")]
 public class PiecesController : ControllerBase
 {
-    private readonly IDictionary<string, Piece> _pieces;
+    private readonly IDictionary<string, Model.Piece> _pieces;
     private readonly ILogger<PiecesController> _logger;
 
-    public PiecesController(IDictionary<string, Piece> pieces, ILogger<PiecesController> logger)
+    public PiecesController(IEnumerable<Model.Piece> pieces, ILogger<PiecesController> logger)
     {
-        _pieces = pieces;
+        _pieces = pieces.ToDictionary(p => p.Id.NormaliseId());
         _logger = logger;
     }
 
     [HttpGet()]
-    public ActionResult<IEnumerable<Piece>> Get()
+    public ActionResult<IEnumerable<Model.Piece>> Get()
     {
         return _pieces.Values.ToList();
     }
 
-    [HttpGet("{id}")]
-    public ActionResult<Piece> Get(string id)
+    [HttpGet("{pieceId}")]
+    public ActionResult<Model.Piece> Get(string pieceId)
     {
-        if (!_pieces.TryGetValue(id, out Piece? piece))
+        pieceId = pieceId.NormaliseId();
+
+        if (!_pieces.TryGetValue(pieceId, out Model.Piece? piece))
         {
-            return NotFound($"Unknown piece: '{id}'");
+            return NotFound($"Unknown piece: '{pieceId}'");
         }
 
         return piece;

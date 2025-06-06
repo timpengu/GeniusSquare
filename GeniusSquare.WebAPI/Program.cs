@@ -1,7 +1,6 @@
-
-using GeniusSquare.WebAPI.Model;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using GeniusSquare.WebAPI.Helpers;
 
 namespace GeniusSquare.WebAPI;
 
@@ -36,17 +35,18 @@ public static class Program
 
     private static void AddServices(this IServiceCollection services)
     {
-        services.AddSingleton<IDictionary<string, Config>>(
-            LoadConfigs().ToDictionary(config => config.Id));
-
-        services.AddSingleton<IDictionary<string, Piece>>(
-            LoadPieces().ToDictionary(piece => piece.Id));
+        services.AddSingleton<IEnumerable<Model.Config>>(LoadConfigs());
+        services.AddSingleton<IEnumerable<Model.Piece>>(LoadPieces());
     }
 
-    private static IEnumerable<Config> LoadConfigs() => LoadJson<Config[]>("Configuration/Configs.json");
-    private static IEnumerable<Piece> LoadPieces() => LoadJson<Piece[]>("Configuration/Pieces.json");
+    private static IList<Model.Config> LoadConfigs() =>
+        LoadJsonArray<Model.Config>("Configuration/Configs.json").Normalise().ToList();
+    
+    private static IList<Model.Piece> LoadPieces() =>
+        LoadJsonArray<Model.Piece>("Configuration/Pieces.json").Normalise().ToList();
 
     // TODO: Share LoadJson() implementation with GeniusSquare.Configuration.Config.Load()
+    private static IEnumerable<T> LoadJsonArray<T>(string path) => LoadJson<IEnumerable<T>>(path);
     private static T LoadJson<T>(string path)
     {
         string json = File.ReadAllText(path);

@@ -3,6 +3,6 @@
     "Id": "default",
     "BoardSize": [ 6, 6 ],
     "PieceTransformation": "RotateAndReflect",
-    "Pieces": [ "O1", "I2", "I3", "J3", "I4", "J4", "O4", "T4", "S4" ]
+    "PieceIds": [ "O1", "I2", "I3", "J3", "I4", "J4", "O4", "T4", "S4" ]
   }
 ]

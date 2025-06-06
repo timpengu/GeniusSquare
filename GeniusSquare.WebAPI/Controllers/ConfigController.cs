@@ -1,4 +1,4 @@
-using GeniusSquare.WebAPI.Model;
+using GeniusSquare.WebAPI.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeniusSquare.WebAPI.Controllers;
@@ -7,19 +7,21 @@ namespace GeniusSquare.WebAPI.Controllers;
 [Route("config")]
 public class ConfigController : ControllerBase
 {
-    private readonly IDictionary<string, Config> _configs;
+    private readonly IDictionary<string, Model.Config> _configs;
     private readonly ILogger<ConfigController> _logger;
 
-    public ConfigController(IDictionary<string, Config> configs, ILogger<ConfigController> logger)
+    public ConfigController(IEnumerable<Model.Config> configs, ILogger<ConfigController> logger)
     {
-        _configs = configs;
+        _configs = configs.ToDictionary(c => c.Id.NormaliseId());
         _logger = logger;
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Config> Get(string id)
+    public ActionResult<Model.Config> Get(string id)
     {
-        if (!_configs.TryGetValue(id, out Config? config))
+        id = id.NormaliseId();
+
+        if (!_configs.TryGetValue(id, out Model.Config? config))
         {
             return NotFound($"Unknown config: '{id}'");
         }
