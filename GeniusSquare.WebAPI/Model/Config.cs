@@ -6,6 +6,6 @@ public record Config
 
     public required string Id { get; init; }
     public required Coord BoardSize { get; init; }
-    public required Transformation Transformation { get; init; }
+    public required PieceTransformation PieceTransformation { get; init; }
     public List<string> Pieces { get; init; } = [];
 }

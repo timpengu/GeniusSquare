@@ -19,7 +19,7 @@ public sealed class Piece
     public int Positions { get; private set; } = 0;
 
     public IReadOnlyList<OrientedPiece> Orientations => _orientations;
-    private List<OrientedPiece> _orientations = new();
+    private List<OrientedPiece> _orientations = [];
 
     public override string ToString() => Name;
 }

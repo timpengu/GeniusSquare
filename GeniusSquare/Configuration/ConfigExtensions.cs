@@ -21,7 +21,11 @@ public static class ConfigExtensions
             Piece piece;
             try
             {
-                piece = configPiece.GeneratePiece(config.Transformation);
+                piece = PieceBuilder
+                    .Create(configPiece.Name ?? "", configPiece.ConsoleColor)
+                    .WithPositions(configPiece.Positions.Select(ToCoord))
+                    .WithOrientations(config.PieceTransformation)
+                    .BuildPiece();
             }
             catch (Exception e)
             {
@@ -30,29 +34,5 @@ public static class ConfigExtensions
 
             yield return piece;
         }
-    }
-
-    private static Piece GeneratePiece(this ConfigPiece configPiece, Transformation transformation)
-    {
-        var builder = PieceBuilder
-            .Create(configPiece.Name ?? "", configPiece.ConsoleColor)
-            .WithPositions(configPiece.Positions.Select(ToCoord));
-
-        if (transformation.HasFlag(Transformation.Rotate))
-        {
-            builder.AddRotations();
-        }
-
-        if (transformation.HasFlag(Transformation.ReflectX))
-        {
-            builder.AddReflectionsX();
-        }
-
-        if (transformation.HasFlag(Transformation.ReflectY))
-        {
-            builder.AddReflectionsY();
-        }
-
-        return builder.BuildPiece();
     }
 }

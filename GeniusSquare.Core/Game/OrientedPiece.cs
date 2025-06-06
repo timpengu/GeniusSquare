@@ -12,17 +12,8 @@ public sealed class OrientedPiece : IEquatable<OrientedPiece>
     {
         Piece = piece;
         Name = name;
-        Positions = Normalise(positions).ToList();
+        Positions = positions.Normalise().ToList();
         Bounds = Positions.GetBounds();
-    }
-
-    private static IEnumerable<Coord> Normalise(IEnumerable<Coord> positions)
-    {
-        List<Coord> positionsList = positions.ToList(); // copy for multiple enumeration
-        CoordRange bounds = positionsList.GetBounds();
-        return positionsList
-            .Transpose(-bounds.Start) // transpose to origin
-            .Order(); // apply standard ordering
     }
 
     /// <remarks>

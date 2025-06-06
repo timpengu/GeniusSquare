@@ -1,13 +1,15 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace GeniusSquare.Core.Coords;
+
 public record struct Coord(int X, int Y) : IComparable<Coord>
 {
     public static Coord Zero = new(0, 0); // default
 
     public static Coord MinValue = new(int.MinValue, int.MinValue);
     public static Coord MaxValue = new(int.MaxValue, int.MaxValue);
+
+    public static implicit operator Coord((int X, int Y) value) => new Coord(value.X, value.Y);
 
     public static Coord operator +(Coord a, Coord b) => new(a.X + b.X, a.Y + b.Y);
     public static Coord operator -(Coord a, Coord b) => new(a.X - b.X, a.Y - b.Y);

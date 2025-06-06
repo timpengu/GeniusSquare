@@ -77,26 +77,6 @@ internal class CoordTests
     }
 
     [TestCase(0, 0, 0, 0)]
-    [TestCase(1, 2, -1, 2)]
-    [TestCase(-1, -2, 1, -2)]
-    public static void ReflectX_TransformsCoord(int ax, int ay, int ex, int ey)
-    {
-        var actual = new Coord(ax, ay).ReflectX();
-        var expected = new Coord(ex, ey);
-        actual.Should().Be(expected);
-    }
-
-    [TestCase(0, 0, 0, 0)]
-    [TestCase(1, 2, 1, -2)]
-    [TestCase(-1, -2, -1, 2)]
-    public static void ReflectY_TransformsCoord(int ax, int ay, int ex, int ey)
-    {
-        var actual = new Coord(ax, ay).ReflectY();
-        var expected = new Coord(ex, ey);
-        actual.Should().Be(expected);
-    }
-
-    [TestCase(0, 0, 0, 0)]
     [TestCase(1, 2, -2, 1)]
     [TestCase(-1, -2, 2, -1)]
     public static void Rotate90_TransformsCoord(int ax, int ay, int ex, int ey)
@@ -122,6 +102,46 @@ internal class CoordTests
     public static void Rotate270_TransformsCoord(int ax, int ay, int ex, int ey)
     {
         var actual = new Coord(ax, ay).Rotate270();
+        var expected = new Coord(ex, ey);
+        actual.Should().Be(expected);
+    }
+
+    [TestCase(0, 0, 0, 0)]
+    [TestCase(1, 2, -1, 2)]
+    [TestCase(-1, -2, 1, -2)]
+    public static void Reflect_TransformsCoord(int ax, int ay, int ex, int ey)
+    {
+        var actual = new Coord(ax, ay).Reflect();
+        var expected = new Coord(ex, ey);
+        actual.Should().Be(expected);
+    }
+
+    [TestCase(0, 0, 0, 0)]
+    [TestCase(1, 2, 2, 1)]
+    [TestCase(-1, -2, -2, -1)]
+    public static void ReflectRotate90_TransformsCoord(int ax, int ay, int ex, int ey)
+    {
+        var actual = new Coord(ax, ay).ReflectRotate90();
+        var expected = new Coord(ex, ey);
+        actual.Should().Be(expected);
+    }
+
+    [TestCase(0, 0, 0, 0)]
+    [TestCase(1, 2, 1, -2)]
+    [TestCase(-1, -2, -1, 2)]
+    public static void ReflectRotate180_TransformsCoord(int ax, int ay, int ex, int ey)
+    {
+        var actual = new Coord(ax, ay).ReflectRotate180();
+        var expected = new Coord(ex, ey);
+        actual.Should().Be(expected);
+    }
+
+    [TestCase(0, 0, 0, 0)]
+    [TestCase(1, 2, -2, -1)]
+    [TestCase(-1, -2, 2, 1)]
+    public static void ReflectRotate270_TransformsCoord(int ax, int ay, int ex, int ey)
+    {
+        var actual = new Coord(ax, ay).ReflectRotate270();
         var expected = new Coord(ex, ey);
         actual.Should().Be(expected);
     }

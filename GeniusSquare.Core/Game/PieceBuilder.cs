@@ -4,17 +4,40 @@ namespace GeniusSquare.Core.Game;
 
 public sealed class PieceBuilder
 {
-    private record struct Orientation(string Suffix, List<Coord> Positions)
+    private record struct NamedOrientation(Orientation Orientation, string Suffix) { }
+
+    private static class Orientations
     {
-        public Orientation Transform(char suffix, Func<Coord, Coord> transformation) =>
-            new Orientation(
-                Suffix + suffix,
-                Positions.Select(transformation).ToList());
+        public static List<NamedOrientation> Original =
+        [
+            new (Orientation.Ar, "a"),
+        ];
+
+        public static List<NamedOrientation> Rotated =
+        [
+            new (Orientation.Ar, "a"),
+            new (Orientation.Br, "b"),
+            new (Orientation.Cr, "c"),
+            new (Orientation.Dr, "d"),
+        ];
+
+        public static List<NamedOrientation> RotatedAndReflected =
+        [
+            new (Orientation.Ar, "ar"),
+            new (Orientation.Br, "br"),
+            new (Orientation.Cr, "cr"),
+            new (Orientation.Dr, "dr"),
+            new (Orientation.Al, "al"),
+            new (Orientation.Bl, "bl"),
+            new (Orientation.Cl, "cl"),
+            new (Orientation.Dl, "dl"),
+        ];
     }
 
     private string _name;
     private ConsoleColor _consoleColor;
-    private List<Orientation> _orientations = new();
+    private List<Coord> _positions = [];
+    private List<NamedOrientation> _orientations = [];
 
     public static PieceBuilder Create(string name, ConsoleColor consoleColor) => new(name, consoleColor);
     private PieceBuilder(string name, ConsoleColor consoleColor)
@@ -23,42 +46,21 @@ public sealed class PieceBuilder
         _consoleColor = consoleColor;
     }
 
-    public PieceBuilder WithPositions(IEnumerable<Coord> positions) => WithPositions(String.Empty, positions);
-    public PieceBuilder WithPositions(string suffix, IEnumerable<Coord> positions)
+    public PieceBuilder WithPositions(IEnumerable<Coord> positions)
     {
-        Orientation orientation = new(suffix, positions.ToList());
-        _orientations.Add(orientation);
+        _positions = positions.ToList();
         return this;
     }
 
-    public PieceBuilder AddRotations() =>
-        ReplaceWithTransformations(orientation => [
-            orientation.Transform('a', coord => coord),
-            orientation.Transform('b', coord => coord.Rotate90()),
-            orientation.Transform('c', coord => coord.Rotate180()),
-            orientation.Transform('d', coord => coord.Rotate270())
-        ]);
-
-    public PieceBuilder AddReflectionsX() =>
-        AddTransformations(orientation => [
-            orientation.Transform('x', coord => coord.ReflectX())
-        ]);
-
-    public PieceBuilder AddReflectionsY() =>
-        AddTransformations(orientation => [
-            orientation.Transform('y', coord => coord.ReflectY())
-        ]);
-
-    private PieceBuilder ReplaceWithTransformations(Func<Orientation, IEnumerable<Orientation>> transformations)
+    public PieceBuilder WithOrientations(PieceTransformation transformation)
     {
-        _orientations = _orientations.SelectMany(transformations).ToList();
-        return this;
-    }
-
-    private PieceBuilder AddTransformations(Func<Orientation, IEnumerable<Orientation>> transformations)
-    {
-        var newOrientations = _orientations.SelectMany(transformations).ToList();
-        _orientations.AddRange(newOrientations);
+        _orientations = transformation switch
+        {
+            PieceTransformation.None => Orientations.Original,
+            PieceTransformation.Rotate => Orientations.Rotated,
+            PieceTransformation.RotateAndReflect => Orientations.RotatedAndReflected,
+            _ => throw new ArgumentException($"Invalid {nameof(PieceTransformation)}: {transformation}", nameof(transformation))
+        };
         return this;
     }
 
@@ -68,10 +70,19 @@ public sealed class PieceBuilder
         
         piece.AddOrientations(
             _orientations
-                .Select(o => new OrientedPiece(piece, _name + o.Suffix, o.Positions))
-                .Distinct() // exclude duplicated orientations
+                .Select(orientation => BuildOrientedPiece(piece, orientation))
+                .Distinct() // exclude duplicate orientations due to symmetry
         );
         
         return piece;
+    }
+
+    private OrientedPiece BuildOrientedPiece(Piece piece, NamedOrientation orientation)
+    {
+        return new OrientedPiece(
+            piece,
+            piece.Name + orientation.Suffix,
+            _positions.Transform(orientation.Orientation)
+        );
     }
 }

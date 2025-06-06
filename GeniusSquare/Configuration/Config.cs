@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using GeniusSquare.Core.Game;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace GeniusSquare.Configuration;
@@ -9,7 +10,7 @@ public sealed record Config
     
     public ConfigPiece[] Pieces { get; set; } = [];
 
-    public Transformation Transformation { get; set; } = Transformation.None;
+    public PieceTransformation PieceTransformation { get; set; } = PieceTransformation.None;
 
     public static Config Load(string configPath)
     {
