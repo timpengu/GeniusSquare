@@ -2,6 +2,7 @@
 
 @configId=default
 @pieceId=J4
+@orientationId=bl
 
 GET {{GeniusSquare.WebAPI_HostAddress}}/config/{{configId}}
 
@@ -15,3 +16,6 @@ GET {{GeniusSquare.WebAPI_HostAddress}}/pieces/{{pieceId}}
 
 ###
 
+GET {{GeniusSquare.WebAPI_HostAddress}}/pieces/{{pieceId}}/{{orientationId}}
+
+###
