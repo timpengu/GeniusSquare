@@ -10,7 +10,7 @@ public static class Solver
         // Sort pieces heuristically by descending difficulty of placement
         var orderedPieces = pieces
             .OrderDescending(new PlacementDifficultyComparer())
-            .ToList(); 
+            .ToList();
 
         return board.Place(orderedPieces);
     }
@@ -29,8 +29,7 @@ public static class Solver
                 board
                     .WithPlacement(placement) // add placement to board
                     .Place(pieces.Skip(1)) // place subsequent pieces recursively
-            )
-            .ToList();
+            );
     }
 
     private static IEnumerable<Placement> GetPlacements(this Board board, Piece piece)

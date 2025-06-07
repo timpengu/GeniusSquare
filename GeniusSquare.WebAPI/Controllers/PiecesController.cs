@@ -54,10 +54,10 @@ public class PiecesController : ControllerBase
         }
 
         List<Model.Coord> orientedPositions = piece.Positions
-            .Select(coord => (Coord)coord)
+            .ToDomain()
             .Transform(orientation.Value)
             .Normalise()
-            .Select(coord => (Model.Coord)coord)
+            .ToModel()
             .ToList();
 
         return new Model.OrientedPiece
