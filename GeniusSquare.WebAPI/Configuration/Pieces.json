@@ -1,7 +1,7 @@
 ﻿[
   {
     // ⬛
-    "Id": "O1",
+    "PieceId": "O1",
     "ConsoleColor": "Blue",
     "HtmlColor": "#0f20d9",
     "Positions": [
@@ -10,7 +10,7 @@
   },
   {
     // ⬛ ⬛
-    "Id": "I2",
+    "PieceId": "I2",
     "ConsoleColor": "DarkRed", // Brown
     "HtmlColor": "#9e6523",
     "Positions": [
@@ -20,7 +20,7 @@
   },
   {
     // ⬛ ⬛ ⬛
-    "Id": "I3",
+    "PieceId": "I3",
     "ConsoleColor": "DarkYellow", // Orange
     "HtmlColor": "#ff8000",
     "Positions": [
@@ -32,7 +32,7 @@
   {
     // ⬛
     // ⬛ ⬛
-    "Id": "J3",
+    "PieceId": "J3",
     "ConsoleColor": "DarkMagenta", // Purple
     "HtmlColor": "#aa22aa",
     "Positions": [
@@ -43,7 +43,7 @@
   },
   {
     // ⬛ ⬛ ⬛ ⬛
-    "Id": "I4",
+    "PieceId": "I4",
     "ConsoleColor": "DarkGray",
     "HtmlColor": "#777777",
     "Positions": [
@@ -56,7 +56,7 @@
   {
     // ⬛
     // ⬛ ⬛ ⬛
-    "Id": "J4",
+    "PieceId": "J4",
     "ConsoleColor": "Cyan",
     "HtmlColor": "#00b3ff",
     "Positions": [
@@ -69,7 +69,7 @@
   {
     // ⬛ ⬛
     // ⬛ ⬛
-    "Id": "O4",
+    "PieceId": "O4",
     "ConsoleColor": "DarkGreen",
     "HtmlColor": "#007500",
     "Positions": [
@@ -82,7 +82,7 @@
   {
     //   ⬛
     // ⬛ ⬛ ⬛
-    "Id": "T4",
+    "PieceId": "T4",
     "ConsoleColor": "Yellow",
     "HtmlColor": "#f0f000",
     "Positions": [
@@ -95,7 +95,7 @@
   {
     //   ⬛ ⬛
     // ⬛ ⬛
-    "Id": "S4",
+    "PieceId": "S4",
     "ConsoleColor": "Red",
     "HtmlColor": "#e00101",
     "Positions": [

@@ -4,7 +4,7 @@ namespace GeniusSquare.WebAPI.Model;
 
 public record Piece : INormal<Piece>
 {
-    public required string Id { get; init; }
+    public required string PieceId { get; init; }
 
     public string? ConsoleColor { get; init; }
     public string? HtmlColor { get; init; }
@@ -13,6 +13,6 @@ public record Piece : INormal<Piece>
 
     public Piece Normalise() => this with
     {
-        Id = Id.NormaliseId()
+        PieceId = PieceId.NormaliseId()
     };
 }

@@ -12,18 +12,18 @@ public class ConfigController : ControllerBase
 
     public ConfigController(IEnumerable<Model.Config> configs, ILogger<ConfigController> logger)
     {
-        _configs = configs.ToDictionary(c => c.Id.NormaliseId());
+        _configs = configs.Normalise().ToDictionary(c => c.ConfigId);
         _logger = logger;
     }
 
-    [HttpGet("{id}")]
-    public ActionResult<Model.Config> Get(string id)
+    [HttpGet("{configId}")]
+    public ActionResult<Model.Config> Get(string configId)
     {
-        id = id.NormaliseId();
+        configId = configId.NormaliseId();
 
-        if (!_configs.TryGetValue(id, out Model.Config? config))
+        if (!_configs.TryGetValue(configId, out Model.Config? config))
         {
-            return NotFound($"Unknown config: '{id}'");
+            return NotFound($"Unknown config: '{configId}'");
         }
 
         return config;

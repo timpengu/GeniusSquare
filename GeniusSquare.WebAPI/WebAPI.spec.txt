@@ -1,10 +1,10 @@
 
 http://geniusSquare/config/{ConfigId=default}
 {
-	string Id
+	string ConfigId
 	Coord BoardSize
-	string Transformation
-	string[] Pieces
+	string PieceTransformation
+	string[] PieceIds
 }
 
 http://geniusSquare/pieces
@@ -14,7 +14,7 @@ http://geniusSquare/pieces
 
 http://geniusSquare/pieces/{PieceId}
 {
-	string Id
+	string PieceId
 	string ConsoleColor
 	string HtmlColor
 	Coord[] Positions

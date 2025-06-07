@@ -14,7 +14,7 @@ public class PiecesController : ControllerBase
 
     public PiecesController(IEnumerable<Model.Piece> pieces, ILogger<PiecesController> logger)
     {
-        _pieces = pieces.ToDictionary(p => p.Id.NormaliseId());
+        _pieces = pieces.Normalise().ToDictionary(p => p.PieceId);
         _logger = logger;
     }
 

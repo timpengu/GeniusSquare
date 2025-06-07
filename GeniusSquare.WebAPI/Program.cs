@@ -35,15 +35,12 @@ public static class Program
 
     private static void AddServices(this IServiceCollection services)
     {
-        services.AddSingleton<IEnumerable<Model.Config>>(LoadConfigs());
-        services.AddSingleton<IEnumerable<Model.Piece>>(LoadPieces());
+        services.AddSingleton(LoadConfigs());
+        services.AddSingleton(LoadPieces());
     }
 
-    private static IList<Model.Config> LoadConfigs() =>
-        LoadJsonArray<Model.Config>("Configuration/Configs.json").Normalise().ToList();
-    
-    private static IList<Model.Piece> LoadPieces() =>
-        LoadJsonArray<Model.Piece>("Configuration/Pieces.json").Normalise().ToList();
+    private static IEnumerable<Model.Config> LoadConfigs() => LoadJsonArray<Model.Config>("Configuration/Configs.json");
+    private static IEnumerable<Model.Piece> LoadPieces() => LoadJsonArray<Model.Piece>("Configuration/Pieces.json");
 
     // TODO: Share LoadJson() implementation with GeniusSquare.Configuration.Config.Load()
     private static IEnumerable<T> LoadJsonArray<T>(string path) => LoadJson<IEnumerable<T>>(path);
