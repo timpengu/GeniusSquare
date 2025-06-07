@@ -2,13 +2,36 @@
 using System.Text;
 
 namespace GeniusSquare.Core.Game;
+
 public sealed record Board
 {
     private readonly IEnumerable<Placement> _placements;
     private readonly bool[,] _occupation;
 
+    /// <summary>
+    /// Returns an empty board of the given size
+    /// </summary>
     public static Board Create(Coord size) => new Board(size);
-    
+
+    /// <summary>
+    /// Returns a board with additional occupied positions
+    /// </summary>
+    public Board WithOccupiedPositions(IEnumerable<Coord> positions) => new Board(_placements, WithOccupation(positions));
+
+    /// <summary>
+    /// Returns a board with placement of an oriented piece
+    /// </summary>
+    public Board WithPlacement(Placement placement) => new Board(_placements.Append(placement), WithOccupation(placement.Positions));
+
+    public CoordRange Bounds => new(Coord.Zero, new Coord(XSize, YSize));
+    public int XSize => _occupation.GetLength(0);
+    public int YSize => _occupation.GetLength(1);
+
+    public IReadOnlyCollection<Placement> Placements => _placements.ToList();
+
+    public bool IsOccupied(Placement placement) => placement.Positions.Any(IsOccupied);
+    public bool IsOccupied(Coord position) => _occupation[position.X, position.Y];
+
     private Board(Coord size)
     {
         if (size.X < 0 || size.Y < 0)
@@ -23,18 +46,6 @@ public sealed record Board
         _placements = placements;
         _occupation = occupation;
     }
-
-    public CoordRange Bounds => new(Coord.Zero, new Coord(XSize, YSize));
-    public int XSize => _occupation.GetLength(0);
-    public int YSize => _occupation.GetLength(1);
-
-    public IReadOnlyCollection<Placement> Placements => _placements.ToList();
-
-    public bool IsOccupied(Placement placement) => placement.Positions.Any(IsOccupied);
-    public bool IsOccupied(Coord position) => _occupation[position.X, position.Y];
-
-    public Board WithOccupiedPositions(IEnumerable<Coord> positions) => new Board(_placements, WithOccupation(positions));
-    public Board WithPlacement(Placement placement) => new Board(_placements.Append(placement), WithOccupation(placement.Positions));
 
     private bool[,] WithOccupation(IEnumerable<Coord> positions)
     {

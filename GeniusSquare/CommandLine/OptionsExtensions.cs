@@ -1,7 +1,6 @@
 ﻿using GeniusSquare.Configuration;
 using GeniusSquare.Core.Coords;
 using GeniusSquare.Core.Game;
-using MoreLinq;
 
 namespace GeniusSquare.CommandLine
 {
@@ -43,31 +42,21 @@ namespace GeniusSquare.CommandLine
 
         public static Board GenerateBoard(this Options opts, Config config, IEnumerable<Piece> pieces)
         {
-            // Get board size from args/cofnig
-            Coord boardSize = opts.GetBoardSize()
-                ?? config.GetDefaultBoardSize()
-                ?? throw new OptionsException($"Missing {nameof(Options.BoardSize)} option and {nameof(Config.DefaultBoardSize)} config.");
+            // Create board with specific/default size
+            Board board = Board.Create(
+                opts.GetBoardSize() ??
+                config.GetDefaultBoardSize() ??
+                throw new OptionsException($"Missing {nameof(Options.BoardSize)} option and {nameof(Config.DefaultBoardSize)} config."));
 
-            // Get distinct occupied positions from args
-            ISet<Coord> occupiedPositions = opts.OccupiedPositions.Select(Coord.Parse).ToHashSet();
-
-            // Get number of remaining positions to occupy randomly
-            int piecePositions = pieces.Sum(p => p.Positions);
-            int remainingPositions = boardSize.X * boardSize.Y - occupiedPositions.Count - piecePositions; // (can be <= 0)
-            int randomPositions = opts.OccupiedRandoms ?? remainingPositions; // occupy all remaining positions by default
-
-            // Create board with specified occupied positions
-            var board = Board
-                .Create(boardSize)
-                .WithOccupiedPositions(occupiedPositions);
-
-            // Add random occupied positions to board
+            // Add specific occupied positions
             board = board.WithOccupiedPositions(
-                board.Bounds
-                    .EnumerateCoords()
-                    .Where(coord => !board.IsOccupied(coord))
-                    .Shuffle() // generate a random permutation of unoccupied positions
-                    .Take(randomPositions)); // take the first N (if available)
+                opts.OccupiedPositions.Select(Coord.Parse));
+
+            // Add random occupied positions
+            board = board.WithOccupiedRandomPositions(
+                opts.OccupiedRandoms ?? // add specified number of random occupied positions, or default to..
+                board.SurplusPositions(pieces) // critically constrain the board (leave zero unoccupied positions when all pieces are placed)
+            );
 
             return board;
         }
