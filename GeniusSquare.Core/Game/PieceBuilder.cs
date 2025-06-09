@@ -81,6 +81,7 @@ public sealed class PieceBuilder
     {
         return new OrientedPiece(
             piece,
+            orientation.Orientation,
             piece.Name + orientation.Suffix,
             _positions.Transform(orientation.Orientation)
         );

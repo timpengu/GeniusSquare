@@ -4,13 +4,15 @@ namespace GeniusSquare.Core.Game;
 public sealed class OrientedPiece : IEquatable<OrientedPiece>
 {
     public Piece Piece { get; }
-    public string Name { get; }
+    public Orientation Orientation { get; }
+    public string Name { get; } // TODO: remove Name and use Orientation alone
     public IReadOnlyList<Coord> Positions { get; }
     public CoordRange Bounds { get; }
 
-    internal OrientedPiece(Piece piece, string name, IEnumerable<Coord> positions)
+    internal OrientedPiece(Piece piece, Orientation orientation, string name, IEnumerable<Coord> positions)
     {
         Piece = piece;
+        Orientation = orientation;
         Name = name;
         Positions = positions.Normalise().ToList();
         Bounds = Positions.GetBounds();
