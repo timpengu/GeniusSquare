@@ -3,6 +3,8 @@
 @configId=default
 @pieceId=J4
 @orientationId=bl
+@occ=A6,B1,B5,D1,E3,F2,F4
+@solutionNumber=3
 
 GET {{GeniusSquare.WebAPI_HostAddress}}/config/{{configId}}
 
@@ -17,5 +19,17 @@ GET {{GeniusSquare.WebAPI_HostAddress}}/pieces/{{pieceId}}
 ###
 
 GET {{GeniusSquare.WebAPI_HostAddress}}/pieces/{{pieceId}}/{{orientationId}}
+
+###
+
+GET {{GeniusSquare.WebAPI_HostAddress}}/solutions/{{configId}}?occ={{occ}}
+
+###
+
+GET {{GeniusSquare.WebAPI_HostAddress}}/solutions/{{configId}}/{{solutionNumber}}?occ={{occ}}
+
+###
+
+GET {{GeniusSquare.WebAPI_HostAddress}}/solutions/{{configId}}/count?occ={{occ}}
 
 ###

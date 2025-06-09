@@ -4,7 +4,7 @@ using GeniusSquare.Core.Game;
 namespace GeniusSquare.WebAPI.Helpers;
 
 // TODO: Use an AutoMapper framework to convert betwen WebAPI and coord models?
-public static class MappingExtensions
+internal static class MappingExtensions
 {
     public static IEnumerable<Coord> ToDomain(this IEnumerable<Model.Coord> source) => source.Select(coord => coord.ToDomain());
     public static IEnumerable<Model.Coord> ToModel(this IEnumerable<Coord> source) => source.Select(coord => coord.ToModel());
@@ -18,5 +18,21 @@ public static class MappingExtensions
         Model.PieceTransformation.Rotate => PieceTransformation.Rotate,
         Model.PieceTransformation.RotateAndReflect => PieceTransformation.RotateAndReflect,
         _ => throw new ArgumentException($"Invalid {nameof(Model.PieceTransformation)} value: {pieceTransformation}")
+    };
+
+    public static Model.Solution ToModel(this Solution solution, string configId, int solutionNumber) => new Model.Solution
+    {
+        ConfigId = configId,
+        SolutionNumber = solutionNumber,
+        Placements = solution.Placements.ToModel().ToList()
+    };
+
+    public static IEnumerable<Model.Placement> ToModel(this IEnumerable<Placement> source) => source.Select(placement => placement.ToModel());
+
+    public static Model.Placement ToModel(this Placement placement) => new Model.Placement
+    {
+        PieceId = placement.OrientedPiece.Piece.Name.NormaliseId(),
+        OrientationId = placement.OrientedPiece.Orientation.ToString().NormaliseId(),
+        Offset = placement.Offset.ToModel()
     };
 }

@@ -28,19 +28,18 @@ http://geniusSquare/pieces/{PieceId}/{OrientationId}
 }
 
 http://geniusSquare/solutions/{ConfigId=default}
-	?occpos=A2,B2
-	&occrnd=3
+	?occ=A2,B2
 	&skip=30
 	&top=10
 [ // Solution[]
 	...
 ]
 
-http://geniusSquare/solutions/{ConfigId=default}/{Index}
+http://geniusSquare/solutions/{ConfigId=default}/{SolutionNumber}
+	?occ=A2,B2
 {
-	int Index
 	string ConfigId
-	Coord[] OccupiedPositions
+	int SolutionNumber
 	Placement[] Placements =
 	[
 		{
@@ -52,6 +51,7 @@ http://geniusSquare/solutions/{ConfigId=default}/{Index}
 	]
 }
 
-http://geniusSquare/solutions/{ConfigId=default}?count=true
+http://geniusSquare/solutions/{ConfigId=default}/count
+	?occ=A2,B2
 300
 

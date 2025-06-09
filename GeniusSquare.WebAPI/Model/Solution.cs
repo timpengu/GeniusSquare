@@ -3,8 +3,7 @@
 public record Solution
 {
     public required string ConfigId { get; init; }
-    public required int Index { get; init; }
-
-    public List<Coord> OccupiedPositions { get; init; } = [];
+    public required int SolutionNumber { get; init; }
+    
     public List<Placement> Placements { get; init; } = [];
 }

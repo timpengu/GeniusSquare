@@ -1,4 +1,5 @@
 ﻿using GeniusSquare.Core.Coords;
+using System.Drawing;
 
 namespace GeniusSquare.Core.Game;
 
@@ -6,6 +7,7 @@ public sealed class PieceBuilder
 {
     private record struct NamedOrientation(Orientation Orientation, string Suffix) { }
 
+    // TODO: Encapsulate orientation ID/name mappings in a separate class
     private static class Orientations
     {
         public static List<NamedOrientation> Original =
@@ -36,14 +38,19 @@ public sealed class PieceBuilder
 
     private string _name;
     private ConsoleColor _consoleColor;
+    private Color _htmlColor;
+    
     private List<Coord> _positions = [];
     private List<NamedOrientation> _orientations = [];
 
-    public static PieceBuilder Create(string name, ConsoleColor consoleColor) => new(name, consoleColor);
-    private PieceBuilder(string name, ConsoleColor consoleColor)
+    public static PieceBuilder Create(string name, ConsoleColor consoleColor = default, Color htmlColor = default) =>
+        new(name, consoleColor, htmlColor);
+
+    private PieceBuilder(string name, ConsoleColor consoleColor, Color htmlColor)
     {
         _name = name;
         _consoleColor = consoleColor;
+        _htmlColor = htmlColor;
     }
 
     public PieceBuilder WithPositions(IEnumerable<Coord> positions)
@@ -66,7 +73,7 @@ public sealed class PieceBuilder
 
     public Piece BuildPiece()
     {
-        Piece piece = new(_name, _consoleColor);
+        Piece piece = new(_name, _consoleColor, _htmlColor);
         
         piece.AddOrientations(
             _orientations

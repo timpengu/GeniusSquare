@@ -3,7 +3,8 @@ using GeniusSquare.Core.Coords;
 using GeniusSquare.Core.Game;
 using GeniusSquare.WebAPI.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.CodeAnalysis;
+using MoreLinq;
+using System.Drawing;
 
 namespace GeniusSquare.WebAPI.Controllers;
 
@@ -26,49 +27,108 @@ public class SolutionsController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("{configId}")]
-    public ActionResult<IEnumerable<Model.Solution>> Get(string configId, string? occPos, int? occRnd, int? skip, int? top)
+    [HttpGet("{configId}/count")]
+    public ActionResult<long> GetCount(string configId, string? occ)
     {
+        // Parse config ID
         configId = configId.NormaliseId();
-
         if (!_configs.TryGetValue(configId, out Model.Config? config))
         {
             return NotFound($"Unknown config: '{configId}'");
         }
 
-        // Generate pieces from config
+        // Parse occupied positions
+        List<Coord>? occupiedPositions = null;
+        if (occ != null && !occ.TryParseCoords(out occupiedPositions))
+        {
+            return BadRequest($"Invalid occupied positions syntax: '{occ}'");
+        }
+
+        // Generate and count solutions
+        long solutionCount = GenerateSolutions(config, occupiedPositions).LongCount();
+
+        return solutionCount;
+    }
+
+    [HttpGet("{configId}/{solutionNumber}")]
+    public ActionResult<Model.Solution> Get(string configId, int solutionNumber, string? occ)
+    {
+        // Parse config ID
+        configId = configId.NormaliseId();
+        if (!_configs.TryGetValue(configId, out Model.Config? config))
+        {
+            return NotFound($"Unknown config: '{configId}'");
+        }
+
+        // Validate solution number
+        if (solutionNumber < 1)
+        {
+            return BadRequest($"Invalid solution number: {solutionNumber}");
+        }
+
+        // Parse occupied positions
+        List<Coord>? occupiedPositions = null;
+        if (occ != null && !occ.TryParseCoords(out occupiedPositions))
+        {
+            return BadRequest($"Invalid occupied positions: '{occ}'");
+        }
+
+        // Generate, select and map requested solution
+        Model.Solution? solution = GenerateSolutions(config, occupiedPositions)
+            .Skip(solutionNumber - 1)
+            .Cast<Solution?>() // Solution is a struct
+            .FirstOrDefault()
+            ?.ToModel(configId, solutionNumber);
+
+        return solution != null ? solution : NotFound();
+    }
+
+    [HttpGet("{configId}")]
+    public ActionResult<IEnumerable<Model.Solution>> Get(string configId, string? occ, int ? skip = null, int? top = null)
+    {
+        // Parse config ID
+        configId = configId.NormaliseId();
+        if (!_configs.TryGetValue(configId, out Model.Config? config))
+        {
+            return NotFound($"Unknown config: '{configId}'");
+        }
+
+        // Parse occupied positions
+        List<Coord>? occupiedPositions = null;
+        if (occ != null && !occ.TryParseCoords(out occupiedPositions))
+        {
+            return BadRequest($"Invalid occupied positions syntax: '{occ}'");
+        }
+
+        // Generate solutions, page and map results
+        int firstSolutionNumber = (skip ?? 0) + 1;
+        List<Model.Solution> solutions = GenerateSolutions(config, occupiedPositions)
+            .Skip(skip)
+            .Top(top)
+            .Select((solution, index) => solution.ToModel(configId, firstSolutionNumber + index))
+            .ToList();
+
+        // TODO: Add prev,next links in Link header?
+        // TODO: Add count in X-Total-Count header? (then need to enumerate all solutions)
+
+        return solutions;
+    }
+
+    private IEnumerable<Solution> GenerateSolutions(Model.Config config, List<Coord>? occupiedPositions)
+    {
+        // Generate board and pieces for this config
+        Board board = Board.Create(config.BoardSize.ToDomain());
         IReadOnlyCollection<Piece> pieces = GeneratePieces(config).ToList();
 
-        // Create board with configured size
-        Board board = Board.Create(
-            config.BoardSize.ToDomain()
-        );
-
         // Add occupied positions if specified
-        if (occPos != null)
+        if (occupiedPositions != null)
         {
-            if (!TryParseCoords(occPos, out List<Coord>? occupiedPositions))
-            {
-                return BadRequest($"Invalid parameter {nameof(occPos)}: '{occPos}'");
-            }
-
             board = board.WithOccupiedPositions(occupiedPositions);
         }
 
-        // Add random occupied positions 
-        board = board.WithOccupiedRandomPositions(
-            occRnd ?? // add specified number of random occupied positions, or default to..
-            board.SurplusPositions(pieces) // critically constrain the board (leave zero unoccupied positions when all pieces are placed)
-        );
-
-        // Solve and page solutions
-        IEnumerable<Solution> solutions = Solver
-            .GetSolutions(board, pieces)
-            .Skip(skip)
-            .Top(top);
-
-        // TODO: Map solutions to WebAPI model
-        return new List<Model.Solution>();
+        // Generate solutions
+        // TODO: cache solutions per (config,occupiedPositions)
+        return Solver.GetSolutions(board, pieces);
     }
 
     private IEnumerable<Piece> GeneratePieces(Model.Config config)
@@ -77,37 +137,29 @@ public class SolutionsController : ControllerBase
         {
             if (!_pieces.TryGetValue(pieceId, out Model.Piece? configPiece))
             {
+                // TODO: Validate PieceIds when creating configs
                 throw new Exception($"Piece not found '{pieceId}' from config '{config.ConfigId}'");
             }
 
-            ConsoleColor consoleColor = ParseConsoleColor(configPiece.ConsoleColor) ?? ConsoleColor.White;
+            ConsoleColor consoleColor = ConsoleColor.Black;
+            if (configPiece.ConsoleColor != null && !Enum.TryParse(configPiece.ConsoleColor, out consoleColor))
+            {
+                // TODO: Validate ConsoleColor when creating configs
+                throw new Exception($"Invalid {nameof(ConsoleColor)} value: '{configPiece.ConsoleColor}'");
+            }
 
-            // TODO: Parse configPiece.HtmlColor
+            Color htmlColor = Color.Black;
+            if (configPiece.HtmlColor != null)
+            {
+                // TODO: Validate HtmlColor when creating configs
+                htmlColor = ColorTranslator.FromHtml(configPiece.HtmlColor);
+            }
 
             yield return PieceBuilder
-                .Create(configPiece.PieceId, consoleColor)
+                .Create(configPiece.PieceId, consoleColor, htmlColor)
                 .WithPositions(configPiece.Positions.ToDomain())
                 .WithOrientations(config.PieceTransformation.ToDomain())
                 .BuildPiece();
         }
     }
-
-    private static bool TryParseCoords(string s, [NotNullWhen(true)] out List<Coord>? coords)
-    {
-        string[] strCoords = s.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-        coords = new List<Coord>(strCoords.Length);
-        foreach (var strCoord in strCoords)
-        {
-            if (!Coord.TryParse(strCoord, out Coord coord))
-            {
-                coords = default;
-                return false;
-            }
-            coords.Add(coord);
-        }
-        return true;
-    }
-
-    private static ConsoleColor? ParseConsoleColor(string? consoleColor) =>
-        consoleColor == null ? null : Enum.Parse<ConsoleColor>(consoleColor);
 }

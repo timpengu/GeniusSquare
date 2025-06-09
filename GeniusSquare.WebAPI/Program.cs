@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using GeniusSquare.WebAPI.Helpers;
 
 namespace GeniusSquare.WebAPI;
 
@@ -39,6 +38,7 @@ public static class Program
         services.AddSingleton(LoadPieces());
     }
 
+    // TODO: Add a persistent store for configs, pieces, etc
     private static IEnumerable<Model.Config> LoadConfigs() => LoadJsonArray<Model.Config>("Configuration/Configs.json");
     private static IEnumerable<Model.Piece> LoadPieces() => LoadJsonArray<Model.Piece>("Configuration/Pieces.json");
 

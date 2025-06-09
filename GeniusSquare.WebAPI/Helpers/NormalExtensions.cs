@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace GeniusSquare.WebAPI.Helpers;
 
-public static class NormalExtensions
+internal static class NormalExtensions
 {
     public static string NormaliseId(this string value) =>
         value.Trim().ToLower(CultureInfo.InvariantCulture);
