@@ -1,5 +1,4 @@
 ﻿using GeniusSquare.CommandLine;
-using GeniusSquare.Core.Coords;
 using GeniusSquare.Core.Game;
 
 namespace GeniusSquare.Output;
@@ -18,7 +17,7 @@ internal class ConsoleWriter : IOutputWriter
     public void WriteInitialState(Board board, IReadOnlyCollection<Piece> pieces)
     {
         int boardPositions = board.Bounds.EnumerateCoords().Count(coord => !board.IsOccupied(coord));
-        int piecePositions = pieces.Sum(p => p.Positions);
+        int piecePositions = pieces.Sum(p => p.PositionCount);
 
         Console.WriteLine("Initial board state:");
         Console.WriteLine(board);

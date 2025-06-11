@@ -7,11 +7,11 @@ public sealed class PlacementDifficultyComparer : IComparer<Piece>
 {
     public int Compare(Piece? a, Piece? b)
     {
-        if (a == null && b == null) return 0;
-        if (a == null) return -1;
-        if (b == null) return 1;
+        if (ReferenceEquals(a, b)) return 0;
+        if (ReferenceEquals(a, null)) return -1;
+        if (ReferenceEquals(b, null)) return +1;
 
-        int comparePositions = a.Positions.CompareTo(b.Positions); // more positions are more difficult to place
+        int comparePositions = a.PositionCount.CompareTo(b.PositionCount); // more positions are more difficult to place
         if (comparePositions != 0) return comparePositions;
 
         // TODO: Consider eccentricity? i.e. longest dimension divided by shortest dimension

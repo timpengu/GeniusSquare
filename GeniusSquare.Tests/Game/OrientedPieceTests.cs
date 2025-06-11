@@ -27,44 +27,11 @@ public class OrientedPieceTests
         sut.Positions.Should().BeEquivalentTo(normalPositions.Select(Coord.Parse), o => o.WithStrictOrdering());
     }
 
-    [TestCase("C2")]
-    [TestCase("A1", "B1", "C1", "C2")]
-    public void Equals_WithEqualPositions_IsTrue(params string[] positions)
-    {
-        OrientedPiece a = CreateOrientedPiece(Orientation.Ar, positions.Select(Coord.Parse));
-        OrientedPiece b = CreateOrientedPiece(Orientation.Br, positions.Select(Coord.Parse));
-
-        a.Equals(b).Should().BeTrue();
-    }
-
-    [TestCase("C2")]
-    [TestCase("A1", "B1", "C1", "C2")]
-    public void GetHashCode_WithEqualPositions_ReturnsSame(params string[] positions)
-    {
-        OrientedPiece a = CreateOrientedPiece(Orientation.Ar, positions.Select(Coord.Parse));
-        OrientedPiece b = CreateOrientedPiece(Orientation.Br, positions.Select(Coord.Parse));
-
-        a.GetHashCode().Should().Be(b.GetHashCode());
-    }
-
-    [TestCase("C2")]
-    [TestCase("A1", "B1", "C1", "C2")]
-    public void Distinct_WithEqualPositions_ReturnsSingle(params string[] positions)
-    {
-        OrientedPiece[] pieces =
-        {
-            CreateOrientedPiece(Orientation.Ar, positions.Select(Coord.Parse)),
-            CreateOrientedPiece(Orientation.Br, positions.Select(Coord.Parse))
-        };
-
-        pieces.Distinct().Should().HaveCount(1);
-    }
-
     private static OrientedPiece CreateOrientedPiece(Orientation orientation, IEnumerable<Coord> positions) =>
         CreateOrientedPiece(orientation, positions.ToArray());
 
     private static OrientedPiece CreateOrientedPiece(Orientation orientation, params Coord[] positions) =>
         new(_piece, orientation, positions);
-    
+
     private static Piece _piece = new("Test", ConsoleColor.Black);
 }

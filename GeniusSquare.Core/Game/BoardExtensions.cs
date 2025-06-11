@@ -21,7 +21,7 @@ public static class BoardExtensions
     public static int SurplusPositions(this Board board, IEnumerable<Piece> pieces)
     {
         int unoccupiedPositions = board.UnoccupiedPositions().Count();
-        int placementPositions = pieces.Sum(p => p.Positions);
+        int placementPositions = pieces.Sum(p => p.PositionCount);
         return unoccupiedPositions - placementPositions;
     }
 

@@ -2,7 +2,7 @@
 
 namespace GeniusSquare.Core.Game;
 
-public record struct Placement(OrientedPiece OrientedPiece, Coord Offset)
+public record struct Placement(OrientedPiece OrientedPiece, Coord Offset) : IHasPositions
 {
     public IEnumerable<Coord> Positions => OrientedPiece.Positions.Transpose(Offset);
 

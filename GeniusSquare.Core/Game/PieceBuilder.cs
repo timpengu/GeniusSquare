@@ -47,7 +47,7 @@ public sealed class PieceBuilder
         piece.AddOrientations(
             _orientations
                 .Select(orientation => BuildOrientedPiece(piece, orientation))
-                .Distinct() // exclude duplicate orientations due to symmetry
+                .Distinct(new PositionsComparer<OrientedPiece>()) // exclude duplicate orientations due to symmetry
         );
         
         return piece;
