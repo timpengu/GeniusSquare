@@ -27,7 +27,7 @@ internal class ConsoleWriter : IOutputWriter
         Console.WriteLine("Placing pieces (with orientations):");
         foreach (Piece piece in pieces)
         {
-            Console.WriteLine($"{piece} ({String.Join(",", piece.Orientations.Select(op => op.Name))})");
+            Console.WriteLine($"{piece} ({String.Join(",", piece.Orientations.Select(o => o.Orientation))})");
         }
         Console.WriteLine();
 

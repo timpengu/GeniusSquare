@@ -1,8 +1,8 @@
 ﻿namespace GeniusSquare.Core.Game;
 
-public enum PieceTransformation
+public enum PieceOrientation
 {
-    None,
+    Original,
     Rotate,
     RotateAndReflect,
 }

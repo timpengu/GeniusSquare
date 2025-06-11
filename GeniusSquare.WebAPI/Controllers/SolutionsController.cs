@@ -127,7 +127,7 @@ public class SolutionsController : ControllerBase
         }
 
         // Generate solutions
-        // TODO: cache solutions per (config,occupiedPositions)
+        // TODO: Cache solutions per (config,occupiedPositions)
         return Solver.GetSolutions(board, pieces);
     }
 
@@ -142,7 +142,7 @@ public class SolutionsController : ControllerBase
             }
 
             ConsoleColor consoleColor = ConsoleColor.Black;
-            if (configPiece.ConsoleColor != null && !Enum.TryParse(configPiece.ConsoleColor, out consoleColor))
+            if (configPiece.ConsoleColor != null && !Enum.TryParse(configPiece.ConsoleColor, ignoreCase:true, out consoleColor))
             {
                 // TODO: Validate ConsoleColor when creating configs
                 throw new Exception($"Invalid {nameof(ConsoleColor)} value: '{configPiece.ConsoleColor}'");
@@ -158,7 +158,7 @@ public class SolutionsController : ControllerBase
             yield return PieceBuilder
                 .Create(configPiece.PieceId, consoleColor, htmlColor)
                 .WithPositions(configPiece.Positions.ToDomain())
-                .WithOrientations(config.PieceTransformation.ToDomain())
+                .WithOrientations(config.PieceOrientation.ToDomain())
                 .BuildPiece();
         }
     }

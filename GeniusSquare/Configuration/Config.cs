@@ -10,7 +10,7 @@ public sealed record Config
     
     public ConfigPiece[] Pieces { get; set; } = [];
 
-    public PieceTransformation PieceTransformation { get; set; } = PieceTransformation.None;
+    public PieceOrientation PieceOrientation { get; set; } = PieceOrientation.Original;
 
     public static Config Load(string configPath)
     {

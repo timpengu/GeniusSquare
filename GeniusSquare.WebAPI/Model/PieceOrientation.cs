@@ -3,9 +3,9 @@
 namespace GeniusSquare.WebAPI.Model;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum PieceTransformation
+public enum PieceOrientation
 {
-    None,
+    Original,
     Rotate,
     RotateAndReflect,
 }

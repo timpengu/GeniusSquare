@@ -5,43 +5,12 @@ namespace GeniusSquare.Core.Game;
 
 public sealed class PieceBuilder
 {
-    private record struct NamedOrientation(Orientation Orientation, string Suffix) { }
-
-    // TODO: Encapsulate orientation ID/name mappings in a separate class
-    private static class Orientations
-    {
-        public static List<NamedOrientation> Original =
-        [
-            new (Orientation.Ar, "a"),
-        ];
-
-        public static List<NamedOrientation> Rotated =
-        [
-            new (Orientation.Ar, "a"),
-            new (Orientation.Br, "b"),
-            new (Orientation.Cr, "c"),
-            new (Orientation.Dr, "d"),
-        ];
-
-        public static List<NamedOrientation> RotatedAndReflected =
-        [
-            new (Orientation.Ar, "ar"),
-            new (Orientation.Br, "br"),
-            new (Orientation.Cr, "cr"),
-            new (Orientation.Dr, "dr"),
-            new (Orientation.Al, "al"),
-            new (Orientation.Bl, "bl"),
-            new (Orientation.Cl, "cl"),
-            new (Orientation.Dl, "dl"),
-        ];
-    }
-
     private string _name;
     private ConsoleColor _consoleColor;
     private Color _htmlColor;
     
-    private List<Coord> _positions = [];
-    private List<NamedOrientation> _orientations = [];
+    private IList<Coord> _positions = [];
+    private IList<Orientation> _orientations = [];
 
     public static PieceBuilder Create(string name, ConsoleColor consoleColor = default, Color htmlColor = default) =>
         new(name, consoleColor, htmlColor);
@@ -59,14 +28,14 @@ public sealed class PieceBuilder
         return this;
     }
 
-    public PieceBuilder WithOrientations(PieceTransformation transformation)
+    public PieceBuilder WithOrientations(PieceOrientation pieceOrientation)
     {
-        _orientations = transformation switch
+        _orientations = pieceOrientation switch
         {
-            PieceTransformation.None => Orientations.Original,
-            PieceTransformation.Rotate => Orientations.Rotated,
-            PieceTransformation.RotateAndReflect => Orientations.RotatedAndReflected,
-            _ => throw new ArgumentException($"Invalid {nameof(PieceTransformation)}: {transformation}", nameof(transformation))
+            PieceOrientation.Original => Orientations.Original,
+            PieceOrientation.Rotate => Orientations.Rotations,
+            PieceOrientation.RotateAndReflect => Orientations.RotationsAndReflections,
+            _ => throw new ArgumentException($"Invalid {nameof(PieceOrientation)}: {pieceOrientation}", nameof(pieceOrientation))
         };
         return this;
     }
@@ -84,13 +53,12 @@ public sealed class PieceBuilder
         return piece;
     }
 
-    private OrientedPiece BuildOrientedPiece(Piece piece, NamedOrientation orientation)
+    private OrientedPiece BuildOrientedPiece(Piece piece, Orientation orientation)
     {
         return new OrientedPiece(
             piece,
-            orientation.Orientation,
-            piece.Name + orientation.Suffix,
-            _positions.Transform(orientation.Orientation)
+            orientation,
+            _positions.Transform(orientation)
         );
     }
 }

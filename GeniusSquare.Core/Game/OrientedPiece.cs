@@ -1,19 +1,18 @@
 ﻿using GeniusSquare.Core.Coords;
 
 namespace GeniusSquare.Core.Game;
+
 public sealed class OrientedPiece : IEquatable<OrientedPiece>
 {
     public Piece Piece { get; }
     public Orientation Orientation { get; }
-    public string Name { get; } // TODO: remove Name and use Orientation alone
     public IReadOnlyList<Coord> Positions { get; }
     public CoordRange Bounds { get; }
 
-    internal OrientedPiece(Piece piece, Orientation orientation, string name, IEnumerable<Coord> positions)
+    internal OrientedPiece(Piece piece, Orientation orientation, IEnumerable<Coord> positions)
     {
         Piece = piece;
         Orientation = orientation;
-        Name = name;
         Positions = positions.Normalise().ToList();
         Bounds = Positions.GetBounds();
     }
@@ -21,6 +20,7 @@ public sealed class OrientedPiece : IEquatable<OrientedPiece>
     /// <remarks>
     /// OrientedPieces are considered equal iff they contain the same normalised positions (regardless of Piece or Name or coordinate translation)
     /// </remarks>
+    // TODO: Use custom comparer to filter distinct orientations instead of idiosyncratic Equals
     public bool Equals(OrientedPiece? other)
     {
         if (ReferenceEquals(other, null)) return false;
@@ -37,5 +37,5 @@ public sealed class OrientedPiece : IEquatable<OrientedPiece>
         }
     }
 
-    public override string ToString() => $"{Name}[{string.Join(",", Positions)}]";
+    public override string ToString() => $"{Piece.Name}:{Orientation}";
 }

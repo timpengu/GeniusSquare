@@ -6,7 +6,7 @@ public record Config : INormal<Config>
 {
     public required string ConfigId { get; init; }
     public required Coord BoardSize { get; init; }
-    public required PieceTransformation PieceTransformation { get; init; }
+    public required PieceOrientation PieceOrientation { get; init; }
     public List<string> PieceIds { get; init; } = [];
 
     public Config Normalise() => this with

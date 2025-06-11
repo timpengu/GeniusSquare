@@ -1,7 +1,6 @@
 using GeniusSquare.Core.Coords;
 using GeniusSquare.WebAPI.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.CodeAnalysis;
 
 namespace GeniusSquare.WebAPI.Controllers;
 
@@ -48,14 +47,15 @@ public class PiecesController : ControllerBase
             return NotFound($"Unknown piece: '{pieceId}'");
         }
 
-        if (!TryGetOrientation(orientationId, out Orientation? orientation))
+        // TODO: Decouple WebAPI orientationId representation from Orientation enum?
+        if (!Enum.TryParse(orientationId, ignoreCase:true, out Orientation orientation))
         {
             return NotFound($"Unknown orientation: '{orientationId}'");
         }
 
         List<Model.Coord> orientedPositions = piece.Positions
             .ToDomain()
-            .Transform(orientation.Value)
+            .Transform(orientation)
             .Normalise()
             .ToModel()
             .ToList();
@@ -66,24 +66,5 @@ public class PiecesController : ControllerBase
             OrientationId = orientationId,
             Positions = orientedPositions
         };
-    }
-
-    // TODO: Encapsulate orientation ID mapping in GeniusSquare.Core (see PieceBuilder)
-    private static bool TryGetOrientation(string orientationId, [NotNullWhen(true)] out Orientation? orientation)
-    {
-        orientation = orientationId switch
-        {
-            "a" or "ar" => Orientation.Ar,
-            "b" or "br" => Orientation.Br,
-            "c" or "cr" => Orientation.Cr,
-            "d" or "dr" => Orientation.Dr,
-            "al" => Orientation.Al,
-            "bl" => Orientation.Bl,
-            "cl" => Orientation.Cl,
-            "dl" => Orientation.Dl,
-            _ => null
-        };
-
-        return orientation != null;
     }
 }
