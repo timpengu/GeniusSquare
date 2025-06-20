@@ -25,4 +25,6 @@ public record struct SolutionKey(string configId, IEnumerable<Coord> occupiedPos
                 .Aggregate(19, (hashCode, value) => 31 * hashCode + value);
         }
     }
+
+    public override string ToString() => $"{ConfigId},{String.Join(',', OccupiedPositions)}";
 }

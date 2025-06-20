@@ -1,5 +1,6 @@
 using GeniusSquare.Core.Game;
 using GeniusSquare.WebAPI.Caching;
+using Nito.Disposables;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -7,7 +8,7 @@ namespace GeniusSquare.WebAPI;
 
 public static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,9 @@ public static class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+
+        // Start/stop cache monitors
+        await using CollectionAsyncDisposable cacheMonitors = new(app.Services.GetServices<IAsyncCacheMonitor>());
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -39,9 +43,25 @@ public static class Program
         services.AddSingleton(LoadConfigs());
         services.AddSingleton(LoadPieces());
 
-        // TODO: Implement cache monitor to remove LRU items in the background
-        services.AddSingleton<IAsyncCache<SolutionKey, IAsyncCachedEnumerable<Solution>>>(
-            new AsyncCache<SolutionKey, IAsyncCachedEnumerable<Solution>>());
+        services.AddCache<SolutionKey, IAsyncCachedEnumerable<Solution>>(
+            $"AsyncCache<{nameof(Solution)}>",
+            TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(1), 3, 5); // TODO: Read cache parameters from config
+    }
+
+    private static void AddCache<TKey, TValue>(
+        this IServiceCollection services,
+        string cacheName, TimeSpan cacheTimeout, TimeSpan monitorInterval, int cacheLowWatermark, int cacheHighWatermark)
+        where TKey : notnull
+    {
+        services.AddSingleton<IAsyncCache<TKey, TValue>>(serviceProvider =>
+            new AsyncCache<TKey, TValue>());
+
+        services.AddSingleton<IAsyncCacheMonitor>(serviceProvider =>
+            new AsyncCacheMonitor<TKey, TValue>(
+                serviceProvider.GetService<IAsyncCache<TKey,TValue>>()!,
+                serviceProvider.GetService<ILogger<AsyncCacheMonitor<TKey, TValue>>>()!,
+                cacheName, cacheTimeout, monitorInterval, cacheLowWatermark, cacheHighWatermark
+            ));
     }
 
     // TODO: Add a persistent store for configs, pieces, etc
