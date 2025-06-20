@@ -1,10 +1,10 @@
 using GeniusSquare.Core;
 using GeniusSquare.Core.Coords;
 using GeniusSquare.Core.Game;
+using GeniusSquare.WebAPI.Caching;
 using GeniusSquare.WebAPI.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using MoreLinq;
-using System.Drawing;
+using System.Drawing; // TODO: Move piece colors into separate attributes type
 
 namespace GeniusSquare.WebAPI.Controllers;
 
@@ -14,21 +14,24 @@ public class SolutionsController : ControllerBase
 {
     private readonly IDictionary<string, Model.Config> _configs;
     private readonly IDictionary<string, Model.Piece> _pieces;
+    private readonly IAsyncCache<SolutionKey, IAsyncCachedEnumerable<Solution>> _cache;
     private readonly ILogger<ConfigController> _logger;
 
     public SolutionsController(
         IEnumerable<Model.Config> configs,
         IEnumerable<Model.Piece> pieces,
+        IAsyncCache<SolutionKey, IAsyncCachedEnumerable<Solution>> cache,
         ILogger<ConfigController> logger)
     {
         // TODO: Normalise models before injecting to controllers
         _configs = configs.Normalise().ToDictionary(c => c.ConfigId);
         _pieces = pieces.Normalise().ToDictionary(p => p.PieceId);
+        _cache = cache;
         _logger = logger;
     }
 
     [HttpGet("{configId}/count")]
-    public ActionResult<long> GetCount(string configId, string? occ)
+    public async Task<ActionResult<long>> GetCount(string configId, string? occ)
     {
         // Parse config ID
         configId = configId.NormaliseId();
@@ -45,13 +48,15 @@ public class SolutionsController : ControllerBase
         }
 
         // Generate and count solutions
-        long solutionCount = GenerateSolutions(config, occupiedPositions).LongCount();
+        long solutionCount = await
+            GetSolutionsAsync(config, occupiedPositions)
+            .LongCountAsync();
 
         return solutionCount;
     }
 
     [HttpGet("{configId}/{solutionNumber}")]
-    public ActionResult<Model.Solution> Get(string configId, int solutionNumber, string? occ)
+    public  async Task<ActionResult<Model.Solution>> Get(string configId, int solutionNumber, string? occ)
     {
         // Parse config ID
         configId = configId.NormaliseId();
@@ -74,17 +79,19 @@ public class SolutionsController : ControllerBase
         }
 
         // Generate, select and map requested solution
-        Model.Solution? solution = GenerateSolutions(config, occupiedPositions)
+        Solution? solution = await
+            GetSolutionsAsync(config, occupiedPositions)
             .Skip(solutionNumber - 1)
-            .Cast<Solution?>() // Solution is a struct
-            .FirstOrDefault()
-            ?.ToModel(configId, solutionNumber);
+            .Select(solution => (Solution?)solution) // Solution is a struct
+            .FirstOrDefaultAsync();
 
-        return solution != null ? solution : NotFound();
+        return solution.HasValue
+            ? solution.Value.ToModel(configId, solutionNumber)
+            : NotFound();
     }
 
     [HttpGet("{configId}")]
-    public ActionResult<IEnumerable<Model.Solution>> Get(string configId, string? occ, int ? skip = null, int? top = null)
+    public async Task<ActionResult<IEnumerable<Model.Solution>>> Get(string configId, string? occ, int ? skip = null, int? top = null)
     {
         // Parse config ID
         configId = configId.NormaliseId();
@@ -102,16 +109,33 @@ public class SolutionsController : ControllerBase
 
         // Generate solutions, page and map results
         int firstSolutionNumber = (skip ?? 0) + 1;
-        List<Model.Solution> solutions = GenerateSolutions(config, occupiedPositions)
+        List<Model.Solution> solutions = await
+            GetSolutionsAsync(config, occupiedPositions)
             .Skip(skip)
             .Top(top)
             .Select((solution, index) => solution.ToModel(configId, firstSolutionNumber + index))
-            .ToList();
+            .ToListAsync();
 
         // TODO: Add prev,next links in Link header?
         // TODO: Add count in X-Total-Count header? (then need to enumerate all solutions)
 
         return solutions;
+    }
+
+    private async IAsyncEnumerable<Solution> GetSolutionsAsync(Model.Config config, List<Coord>? occupiedPositions)
+    {
+        // TODO: Implement limit on number of solutions that can be cached for an individual solution key
+        IAsyncCachedEnumerable<Solution> GenerateCachedSolutions() =>
+            GenerateSolutions(config, occupiedPositions)
+            .ToAsyncCachedEnumerable();
+
+        SolutionKey cacheKey = new(config.ConfigId, occupiedPositions ?? []);
+        IAsyncCachedEnumerable<Solution> solutions = await _cache.GetOrAddAsync(cacheKey, GenerateCachedSolutions);
+
+        await foreach (Solution solution in solutions)
+        {
+            yield return solution;
+        }
     }
 
     private IEnumerable<Solution> GenerateSolutions(Model.Config config, List<Coord>? occupiedPositions)
@@ -127,7 +151,6 @@ public class SolutionsController : ControllerBase
         }
 
         // Generate solutions
-        // TODO: Cache solutions per (config,occupiedPositions)
         return Solver.GetSolutions(board, pieces);
     }
 

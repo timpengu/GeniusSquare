@@ -1,5 +1,7 @@
-using System.Text.Json.Serialization;
+using GeniusSquare.Core.Game;
+using GeniusSquare.WebAPI.Caching;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GeniusSquare.WebAPI;
 
@@ -36,6 +38,10 @@ public static class Program
     {
         services.AddSingleton(LoadConfigs());
         services.AddSingleton(LoadPieces());
+
+        // TODO: Implement cache monitor to remove LRU items in the background
+        services.AddSingleton<IAsyncCache<SolutionKey, IAsyncCachedEnumerable<Solution>>>(
+            new AsyncCache<SolutionKey, IAsyncCachedEnumerable<Solution>>());
     }
 
     // TODO: Add a persistent store for configs, pieces, etc
