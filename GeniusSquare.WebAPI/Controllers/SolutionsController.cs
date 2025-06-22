@@ -18,14 +18,13 @@ public class SolutionsController : ControllerBase
     private readonly ILogger<ConfigController> _logger;
 
     public SolutionsController(
-        IEnumerable<Model.Config> configs,
-        IEnumerable<Model.Piece> pieces,
+        IDictionary<string, Model.Config> configs,
+        IDictionary<string, Model.Piece> pieces,
         IAsyncCache<SolutionKey, IAsyncCachedEnumerable<Solution>> cache,
         ILogger<ConfigController> logger)
     {
-        // TODO: Normalise models before injecting to controllers
-        _configs = configs.Normalise().ToDictionary(c => c.ConfigId);
-        _pieces = pieces.Normalise().ToDictionary(p => p.PieceId);
+        _configs = configs;
+        _pieces = pieces;
         _cache = cache;
         _logger = logger;
     }
