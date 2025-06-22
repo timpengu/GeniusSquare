@@ -10,9 +10,11 @@ public class ConfigController : ControllerBase
     private readonly IDictionary<string, Model.Config> _configs;
     private readonly ILogger<ConfigController> _logger;
 
-    public ConfigController(IEnumerable<Model.Config> configs, ILogger<ConfigController> logger)
+    public ConfigController(
+        IDictionary<string, Model.Config> configs,
+        ILogger<ConfigController> logger)
     {
-        _configs = configs.Normalise().ToDictionary(c => c.ConfigId);
+        _configs = configs;
         _logger = logger;
     }
 

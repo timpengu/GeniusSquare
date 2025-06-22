@@ -1,5 +1,6 @@
 using GeniusSquare.Core.Game;
 using GeniusSquare.WebAPI.Caching;
+using GeniusSquare.WebAPI.Helpers;
 using Nito.Disposables;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -65,8 +66,15 @@ public static class Program
     }
 
     // TODO: Add a persistent store for configs, pieces, etc
-    private static IEnumerable<Model.Config> LoadConfigs() => LoadJsonArray<Model.Config>("Configuration/Configs.json");
-    private static IEnumerable<Model.Piece> LoadPieces() => LoadJsonArray<Model.Piece>("Configuration/Pieces.json");
+    private static IDictionary<string, Model.Config> LoadConfigs() =>
+        LoadJsonArray<Model.Config>("Configuration/Configs.json")
+        .Normalise()
+        .ToDictionary(c => c.ConfigId);
+
+    private static IDictionary<string, Model.Piece> LoadPieces() =>
+        LoadJsonArray<Model.Piece>("Configuration/Pieces.json")
+        .Normalise()
+        .ToDictionary(p => p.PieceId);
 
     // TODO: Share LoadJson() implementation with GeniusSquare.Configuration.Config.Load()
     private static IEnumerable<T> LoadJsonArray<T>(string path) => LoadJson<IEnumerable<T>>(path);

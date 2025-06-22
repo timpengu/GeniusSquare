@@ -11,9 +11,11 @@ public class PiecesController : ControllerBase
     private readonly IDictionary<string, Model.Piece> _pieces;
     private readonly ILogger<PiecesController> _logger;
 
-    public PiecesController(IEnumerable<Model.Piece> pieces, ILogger<PiecesController> logger)
+    public PiecesController(
+        IDictionary<string, Model.Piece> pieces,
+        ILogger<PiecesController> logger)
     {
-        _pieces = pieces.Normalise().ToDictionary(p => p.PieceId);
+        _pieces = pieces;
         _logger = logger;
     }
 
