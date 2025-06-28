@@ -26,25 +26,27 @@
             margin-bottom: 20px;
             background-color: black;
         }
-        .space {
+        .space,.peg {
             display: flex;
             aspect-ratio: 1/1;
             border-radius: 1px;
-            box-shadow: inset 1px 1px 5px #202020, inset -1px -1px 5px #606060;
+            box-shadow: inset 2px 2px 5px #202020, inset -2px -2px 5px #606060;
             background-color: black;
+        }
+        .peg::before {
+            content: "";
+            display: flex;
+            aspect-ratio: 1/1;
+            margin: 2px;
+            border-radius: 50%;
+            box-shadow: inset -1px -1px 5px black, inset 1px 1px 5px white;
+            background-color: burlywood;
         }
         .block {
             display: flex;
             aspect-ratio: 1/1;
-            border-radius: 5px;
+            border-radius: 4px;
             box-shadow: inset -1px -1px 5px black, inset 1px 1px 5px white;
-        }
-        .peg {
-            display: flex;
-            aspect-ratio: 1/1;
-            border-radius: 50%;
-            box-shadow: inset -1px -1px 5px black, inset 1px 1px 5px white;
-            background-color: burlywood;
         }
         .axis {
             display: flex;
@@ -53,7 +55,7 @@
             justify-content: center;
             font-size: 32px;
             font-family: sans-serif;
-            font-weight: bold;
+            font-weight: 900;
             color: white;
         }
         .o1 {
