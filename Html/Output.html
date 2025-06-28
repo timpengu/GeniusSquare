@@ -27,25 +27,27 @@
             margin-bottom: 20px;
             background-color: black;
         }
-        .space {
+        .space,.peg {
             display: flex;
             aspect-ratio: 1/1;
             border-radius: 1px;
-            box-shadow: inset 1px 1px 5px #202020, inset -1px -1px 5px #606060;
+            box-shadow: inset 2px 2px 5px #202020, inset -2px -2px 5px #606060;
             background-color: black;
+        }
+        .peg::before {
+            content: "";
+            display: flex;
+            aspect-ratio: 1/1;
+            margin: 2px;
+            border-radius: 50%;
+            box-shadow: inset -1px -1px 5px black, inset 1px 1px 5px white;
+            background-color: burlywood;
         }
         .block {
             display: flex;
             aspect-ratio: 1/1;
-            border-radius: 5px;
+            border-radius: 4px;
             box-shadow: inset -1px -1px 5px black, inset 1px 1px 5px white;
-        }
-        .peg {
-            display: flex;
-            aspect-ratio: 1/1;
-            border-radius: 50%;
-            box-shadow: inset -1px -1px 5px black, inset 1px 1px 5px white;
-            background-color: burlywood;
         }
         .axis {
             display: flex;
@@ -54,7 +56,7 @@
             justify-content: center;
             font-size: 32px;
             font-family: sans-serif;
-            font-weight: bold;
+            font-weight: 900;
             color: white;
         }
         .o1 {
@@ -78,11 +80,11 @@
         .o4 {
             background-color: #007500;
         }
-        .s4 {
-            background-color: #e00101;
-        }
         .t4 {
             background-color: #f0f000;
+        }
+        .s4 {
+            background-color: #e00101;
         }
     </style>
   </head>
@@ -139,7 +141,7 @@
       <div class="space"></div>
       <div class="space"></div>
     </div>
-    <div class="title">Solution 1 @ 00:00:00.679</div>
+    <div class="title">Solution 1 @ 00:00:00.166</div>
     <div class="grid">
       <div class="axis"></div>
       <div class="axis">1</div>
@@ -191,7 +193,7 @@
       <div class="block s4"></div>
       <div class="block s4"></div>
     </div>
-    <div class="title">Solution 2 @ 00:00:00.705</div>
+    <div class="title">Solution 2 @ 00:00:00.178</div>
     <div class="grid">
       <div class="axis"></div>
       <div class="axis">1</div>
@@ -243,7 +245,7 @@
       <div class="block s4"></div>
       <div class="block s4"></div>
     </div>
-    <div class="title">Solution 3 @ 00:00:00.728</div>
+    <div class="title">Solution 3 @ 00:00:00.218</div>
     <div class="grid">
       <div class="axis"></div>
       <div class="axis">1</div>
@@ -295,7 +297,7 @@
       <div class="block i2"></div>
       <div class="block i2"></div>
     </div>
-    <div class="title">Solution 4 @ 00:00:00.749</div>
+    <div class="title">Solution 4 @ 00:00:00.241</div>
     <div class="grid">
       <div class="axis"></div>
       <div class="axis">1</div>
@@ -347,7 +349,7 @@
       <div class="block s4"></div>
       <div class="block s4"></div>
     </div>
-    <div class="title">Solution 5 @ 00:00:00.770</div>
+    <div class="title">Solution 5 @ 00:00:00.251</div>
     <div class="grid">
       <div class="axis"></div>
       <div class="axis">1</div>
@@ -399,7 +401,7 @@
       <div class="block s4"></div>
       <div class="block s4"></div>
     </div>
-    <div class="title">Solution 6 @ 00:00:00.785</div>
+    <div class="title">Solution 6 @ 00:00:00.262</div>
     <div class="grid">
       <div class="axis"></div>
       <div class="axis">1</div>
@@ -451,7 +453,7 @@
       <div class="block s4"></div>
       <div class="block s4"></div>
     </div>
-    <div class="title">Solution 7 @ 00:00:00.801</div>
+    <div class="title">Solution 7 @ 00:00:00.269</div>
     <div class="grid">
       <div class="axis"></div>
       <div class="axis">1</div>
@@ -503,7 +505,7 @@
       <div class="block s4"></div>
       <div class="block s4"></div>
     </div>
-    <div class="title">Solution 8 @ 00:00:00.824</div>
+    <div class="title">Solution 8 @ 00:00:00.332</div>
     <div class="grid">
       <div class="axis"></div>
       <div class="axis">1</div>
@@ -555,7 +557,7 @@
       <div class="block i2"></div>
       <div class="block i2"></div>
     </div>
-    <div class="title">Solution 9 @ 00:00:00.864</div>
+    <div class="title">Solution 9 @ 00:00:00.426</div>
     <div class="grid">
       <div class="axis"></div>
       <div class="axis">1</div>
@@ -607,7 +609,7 @@
       <div class="block o4"></div>
       <div class="block o4"></div>
     </div>
-    <div class="title">Solution 10 @ 00:00:00.894</div>
+    <div class="title">Solution 10 @ 00:00:00.437</div>
     <div class="grid">
       <div class="axis"></div>
       <div class="axis">1</div>
@@ -659,7 +661,7 @@
       <div class="block o4"></div>
       <div class="block o4"></div>
     </div>
-    <div class="title">Solution 11 @ 00:00:00.925</div>
+    <div class="title">Solution 11 @ 00:00:00.472</div>
     <div class="grid">
       <div class="axis"></div>
       <div class="axis">1</div>
@@ -711,6 +713,6 @@
       <div class="block o4"></div>
       <div class="block o4"></div>
     </div>
-    <div class="title">Found 11 solutions in 00:00:00.925.</div>
+    <div class="title">Found 11 solutions in 00:00:00.491.</div>
   </body>
 </html>
