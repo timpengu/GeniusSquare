@@ -73,7 +73,7 @@ internal class ConsoleWriter : IOutputWriter
             {
                 Piece? piece = pieces[x, y];
 
-                Console.BackgroundColor = piece?.ConsoleColor ?? ConsoleColor.Black;
+                Console.BackgroundColor = piece?.Attributes.ConsoleColor ?? ConsoleColor.Black;
                 Console.Write(piece?.Name ?? "..");
             }
 

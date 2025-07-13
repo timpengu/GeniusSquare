@@ -6,20 +6,28 @@ namespace GeniusSquare.Core.Game;
 public sealed class PieceBuilder
 {
     private string _name;
-    private ConsoleColor _consoleColor;
-    private Color _htmlColor;
-    
+
+    private PieceAttributes _attributes = new();    
     private IList<Coord> _positions = [];
     private IList<Orientation> _orientations = [];
 
-    public static PieceBuilder Create(string name, ConsoleColor consoleColor = default, Color htmlColor = default) =>
-        new(name, consoleColor, htmlColor);
+    public static PieceBuilder Create(string name) => new(name);
 
-    private PieceBuilder(string name, ConsoleColor consoleColor, Color htmlColor)
+    private PieceBuilder(string name)
     {
         _name = name;
-        _consoleColor = consoleColor;
-        _htmlColor = htmlColor;
+    }
+
+    public PieceBuilder WithAttributes(
+        ConsoleColor? consoleColor = null,
+        Color? htmlColor = null)
+    {
+        _attributes = _attributes with
+        {
+            ConsoleColor = consoleColor ?? _attributes.ConsoleColor,
+            HtmlColor = htmlColor ?? _attributes.HtmlColor
+        };
+        return this;
     }
 
     public PieceBuilder WithPositions(IEnumerable<Coord> positions)
@@ -42,7 +50,7 @@ public sealed class PieceBuilder
 
     public Piece BuildPiece()
     {
-        Piece piece = new(_name, _consoleColor, _htmlColor);
+        Piece piece = new(_name, _attributes);
         
         piece.AddOrientations(
             _orientations

@@ -1,14 +1,11 @@
-﻿using System.Drawing;
-
-namespace GeniusSquare.Core.Game;
+﻿namespace GeniusSquare.Core.Game;
 
 public sealed class Piece
 {
-    internal Piece(string name, ConsoleColor consoleColor = default, Color htmlColor = default)
+    internal Piece(string name, PieceAttributes? attributes = null)
     {
         Name = name;
-        ConsoleColor = consoleColor;
-        HtmlColor = HtmlColor;
+        Attributes = attributes ?? new();
     }
 
     internal void AddOrientations(IEnumerable<OrientedPiece> orientations)
@@ -18,12 +15,12 @@ public sealed class Piece
     }
 
     public string Name { get; }
-    public ConsoleColor ConsoleColor { get; }
-    public Color HtmlColor { get; }
-    public int PositionCount { get; private set; } = 0;
+    public PieceAttributes Attributes { get; }
 
     public IReadOnlyList<OrientedPiece> Orientations => _orientations;
     private List<OrientedPiece> _orientations = [];
+
+    public int PositionCount { get; private set; } = 0;
 
     public override string ToString() => Name;
 }

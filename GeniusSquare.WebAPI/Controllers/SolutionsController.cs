@@ -4,7 +4,7 @@ using GeniusSquare.Core.Game;
 using GeniusSquare.WebAPI.Caching;
 using GeniusSquare.WebAPI.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing; // TODO: Move piece colors into separate attributes type
+using System.Drawing;
 
 namespace GeniusSquare.WebAPI.Controllers;
 
@@ -163,22 +163,25 @@ public class SolutionsController : ControllerBase
                 throw new Exception($"Piece not found '{pieceId}' from config '{config.ConfigId}'");
             }
 
+            Model.PieceAttributes attributes = configPiece.Attributes;
+
             ConsoleColor consoleColor = ConsoleColor.Black;
-            if (configPiece.ConsoleColor != null && !Enum.TryParse(configPiece.ConsoleColor, ignoreCase:true, out consoleColor))
+            if (attributes.ConsoleColor != null && !Enum.TryParse(attributes.ConsoleColor, ignoreCase:true, out consoleColor))
             {
                 // TODO: Validate ConsoleColor when creating configs
-                throw new Exception($"Invalid {nameof(ConsoleColor)} value: '{configPiece.ConsoleColor}'");
+                throw new Exception($"Invalid {nameof(ConsoleColor)} value: '{attributes.ConsoleColor}'");
             }
 
             Color htmlColor = Color.Black;
-            if (configPiece.HtmlColor != null)
+            if (attributes.HtmlColor != null)
             {
                 // TODO: Validate HtmlColor when creating configs
-                htmlColor = ColorTranslator.FromHtml(configPiece.HtmlColor);
+                htmlColor = ColorTranslator.FromHtml(attributes.HtmlColor);
             }
 
             yield return PieceBuilder
-                .Create(configPiece.PieceId, consoleColor, htmlColor)
+                .Create(configPiece.PieceId)
+                .WithAttributes(consoleColor, htmlColor)
                 .WithPositions(configPiece.Positions.ToDomain())
                 .WithOrientations(config.PieceOrientation.ToDomain())
                 .BuildPiece();

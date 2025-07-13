@@ -80,5 +80,5 @@ internal static class BoardTests
     }
 
     private static OrientedPiece CreateOrientedPiece(IEnumerable<Coord> positions) => new(_piece, Orientation.Ar, positions);
-    private static Piece _piece = new("Test", ConsoleColor.Black);
+    private static Piece _piece = new("Test");
 }

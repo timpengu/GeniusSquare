@@ -22,7 +22,8 @@ public static class ConfigExtensions
             try
             {
                 piece = PieceBuilder
-                    .Create(configPiece.Name ?? "", configPiece.ConsoleColor)
+                    .Create(configPiece.Name ?? "")
+                    .WithAttributes(consoleColor: configPiece.ConsoleColor)
                     .WithPositions(configPiece.Positions.Select(ToCoord))
                     .WithOrientations(config.PieceOrientation)
                     .BuildPiece();

@@ -33,5 +33,5 @@ public class OrientedPieceTests
     private static OrientedPiece CreateOrientedPiece(Orientation orientation, params Coord[] positions) =>
         new(_piece, orientation, positions);
 
-    private static Piece _piece = new("Test", ConsoleColor.Black);
+    private static Piece _piece = new("Test");
 }
