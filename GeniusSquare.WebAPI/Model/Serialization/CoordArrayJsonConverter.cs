@@ -22,6 +22,7 @@ public class CoordArrayJsonConverter : JsonConverter<Coord>
             throw new NotSupportedException($"Unsupported type: {typeToConvert.Name}");
         }
 
+        // TODO: fall back to JSON object represenation per the schema? {"X":0,"Y":0}
         int[]? values = _arrayConverter.Read(ref reader, typeof(int[]), options);
 
         if (values == null)

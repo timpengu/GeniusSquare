@@ -3,10 +3,15 @@ using System.Text;
 
 namespace GeniusSquare.Core.Game;
 
-public sealed record Board
+public sealed record Board : IBoardSize
 {
     private readonly IEnumerable<Placement> _placements;
     private readonly bool[,] _occupation;
+
+    public int XSize => _occupation.GetLength(0);
+    public int YSize => _occupation.GetLength(1);
+    public Coord Size { get; }
+    public CoordRange Bounds { get; }
 
     /// <summary>
     /// Returns an empty board of the given size
@@ -22,10 +27,6 @@ public sealed record Board
     /// Returns a board with placement of an oriented piece
     /// </summary>
     public Board WithPlacement(Placement placement) => new Board(_placements.Append(placement), WithOccupation(placement.Positions));
-
-    public CoordRange Bounds => new(Coord.Zero, new Coord(XSize, YSize));
-    public int XSize => _occupation.GetLength(0);
-    public int YSize => _occupation.GetLength(1);
 
     public IReadOnlyCollection<Placement> Placements => _placements.ToList();
 

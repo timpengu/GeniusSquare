@@ -55,7 +55,7 @@ namespace GeniusSquare.CommandLine
             // Add random occupied positions
             board = board.WithOccupiedRandomPositions(
                 opts.OccupiedRandoms ?? // add specified number of random occupied positions, or default to..
-                board.SurplusPositions(pieces) // critically constrain the board (leave zero unoccupied positions when all pieces are placed)
+                board.CountSurplusPositions(pieces) // critically constrain the board (leave zero unoccupied positions when all pieces are placed)
             );
 
             return board;
