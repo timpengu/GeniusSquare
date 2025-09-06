@@ -20,11 +20,11 @@ public record struct Coord(int X, int Y) : IComparable<Coord>
 
     public int CompareTo(Coord other)
     {
-        int compareX = X.CompareTo(other.X);
-        if (compareX != 0) return compareX;
-
         int compareY = Y.CompareTo(other.Y);
         if (compareY != 0) return compareY;
+
+        int compareX = X.CompareTo(other.X);
+        if (compareX != 0) return compareX;
 
         return 0;
     }

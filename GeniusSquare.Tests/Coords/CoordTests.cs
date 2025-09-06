@@ -63,12 +63,12 @@ internal class CoordTests
     [TestCase(0, 0, 0, 0, 0)]
     [TestCase(1, 2, 1, 2, 0)]
     [TestCase(1, 1, 1, 2, -1)]
-    [TestCase(1, 2, 2, 1, -1)]
     [TestCase(1, 2, 2, 2, -1)]
+    [TestCase(2, 1, 1, 2, -1)]
     [TestCase(1, 2, 3, 4, -1)]
     [TestCase(2, 1, 1, 1, +1)]
-    [TestCase(2, 1, 1, 2, +1)]
     [TestCase(2, 2, 1, 2, +1)]
+    [TestCase(1, 2, 2, 1, +1)]
     [TestCase(4, 3, 2, 1, +1)]
     public static void CompareTo_ReturnsComparison(int ax, int ay, int bx, int by, int expected)
     {

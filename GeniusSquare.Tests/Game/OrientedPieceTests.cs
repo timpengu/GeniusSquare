@@ -18,9 +18,9 @@ public class OrientedPieceTests
         sut.Positions.Should().BeEquivalentTo(normalPositions.Select(Coord.Parse));
     }
 
-    [TestCase(new[] { "A1", "B1", "A2", "C2" }, new[] { "A1", "B1", "A2", "C2" })]
-    [TestCase(new[] { "B1", "A1", "C2", "A2" }, new[] { "A1", "B1", "A2", "C2" })]
-    [TestCase(new[] { "C2", "A2", "B1", "A1" }, new[] { "A1", "B1", "A2", "C2" })]
+    [TestCase(new[] { "A1", "B1", "A2", "C2" }, new[] { "A1", "A2", "B1", "C2" })]
+    [TestCase(new[] { "B1", "A1", "C2", "A2" }, new[] { "A1", "A2", "B1", "C2" })]
+    [TestCase(new[] { "C2", "A2", "B1", "A1" }, new[] { "A1", "A2", "B1", "C2" })]
     public void Positions_AreReorderedToNormal(string[] inputPositions, string[] normalPositions)
     {
         OrientedPiece sut = CreateOrientedPiece(Orientation.Ar, inputPositions.Select(Coord.Parse));
