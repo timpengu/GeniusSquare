@@ -62,7 +62,7 @@ internal class ConsoleWriter : IOutputWriter
 
     private void ConsoleWriteColouredLayout(Board board, Solution solution)
     {
-        Piece?[,] pieces = board.GetLayout(solution);
+        Piece?[,] pieces = solution.GetLayout(board.Size);
 
         Console.ForegroundColor = ConsoleColor.White;
         Console.BackgroundColor = ConsoleColor.Black;

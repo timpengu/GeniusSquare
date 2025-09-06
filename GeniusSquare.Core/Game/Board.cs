@@ -23,9 +23,8 @@ public sealed record Board
     /// </summary>
     public Board WithPlacement(Placement placement) => new Board(_placements.Append(placement), WithOccupation(placement.Positions));
 
-    public CoordRange Bounds => new(Coord.Zero, new Coord(XSize, YSize));
-    public int XSize => _occupation.GetLength(0);
-    public int YSize => _occupation.GetLength(1);
+    public Coord Size => new(_occupation.GetLength(0), _occupation.GetLength(1));
+    public CoordRange Bounds => new(Coord.Zero, Size);
 
     public IReadOnlyCollection<Placement> Placements => _placements.ToList();
 
@@ -60,8 +59,8 @@ public sealed record Board
 
     private void Validate(Coord position)
     {
-        if (position.X < 0 || position.X >= XSize ||
-            position.Y < 0 || position.Y >= YSize)
+        if (position.X < 0 || position.X >= Size.X ||
+            position.Y < 0 || position.Y >= Size.Y)
         {
             throw new IndexOutOfRangeException($"Position {position} is outside board bounds {Bounds}");
         }

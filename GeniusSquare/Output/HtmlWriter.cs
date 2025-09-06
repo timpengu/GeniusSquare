@@ -50,7 +50,7 @@ internal class HtmlWriter : IOutputWriter
         xeBody.Add(xeGrid);
 
         xeGrid.Add(
-            CreateGridElements(board, board.GetLayout(solution)));
+            CreateGridElements(board, solution.GetLayout(board.Size)));
     }
 
     private static IEnumerable<XElement> CreateGridElements(Board board, Piece?[,] layout)

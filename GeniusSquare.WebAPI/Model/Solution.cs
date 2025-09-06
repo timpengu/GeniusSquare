@@ -6,4 +6,5 @@ public record Solution
     public required int SolutionNumber { get; init; }
     
     public List<Placement> Placements { get; init; } = [];
+    public string[][] LayoutPieceIds { get; init; } = [];
 }

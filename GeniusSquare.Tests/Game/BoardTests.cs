@@ -11,18 +11,10 @@ internal static class BoardTests
     [TestCase(0, 2)]
     [TestCase(2, 0)]
     [TestCase(3, 2)]
-    public static void XSize_ReturnsBoardXDimension(int xSize, int ySize)
+    public static void Size_ReturnsBoardDimensions(int xSize, int ySize)
     {
-        Board.Create(new(xSize, ySize)).XSize.Should().Be(xSize);
-    }
-
-    [TestCase(0, 0)]
-    [TestCase(0, 2)]
-    [TestCase(2, 0)]
-    [TestCase(3, 2)]
-    public static void YSize_ReturnsBoardYDimension(int xSize, int ySize)
-    {
-        Board.Create(new(xSize, ySize)).YSize.Should().Be(ySize);
+        Coord size = new(xSize, ySize);
+        Board.Create(size).Size.Should().Be(size);
     }
 
     [TestCase(0, 0)]

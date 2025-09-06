@@ -84,8 +84,11 @@ public class SolutionsController : ControllerBase
             .Select(solution => (Solution?)solution) // Solution is a struct
             .FirstOrDefaultAsync();
 
+        // TODO: reference BoardSize (and initial state?) in Solution?
+        Coord boardSize = config.BoardSize.ToDomain();
+
         return solution.HasValue
-            ? solution.Value.ToModel(configId, solutionNumber)
+            ? solution.Value.ToModel(boardSize, configId, solutionNumber)
             : NotFound();
     }
 
@@ -106,13 +109,16 @@ public class SolutionsController : ControllerBase
             return BadRequest($"Invalid occupied positions syntax: '{occ}'");
         }
 
+        // TODO: reference BoardSize (and initial state?) in Solution?
+        Coord boardSize = config.BoardSize.ToDomain();
+
         // Generate solutions, page and map results
         int firstSolutionNumber = (skip ?? 0) + 1;
         List<Model.Solution> solutions = await
             GetSolutionsAsync(config, occupiedPositions)
             .Skip(skip)
             .Top(top)
-            .Select((solution, index) => solution.ToModel(configId, firstSolutionNumber + index))
+            .Select((solution, index) => solution.ToModel(boardSize, configId, firstSolutionNumber + index))
             .ToListAsync();
 
         // TODO: Add prev,next links in Link header?

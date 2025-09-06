@@ -19,12 +19,27 @@ internal static class MappingExtensions
         _ => throw new ArgumentException($"Invalid {nameof(Model.PieceOrientation)} value: {pieceOrientation}")
     };
 
-    public static Model.Solution ToModel(this Solution solution, string configId, int solutionNumber) => new Model.Solution
+    public static Model.Solution ToModel(this Solution solution, Coord boardSize, string configId, int solutionNumber) => new Model.Solution
     {
         ConfigId = configId,
         SolutionNumber = solutionNumber,
-        Placements = solution.Placements.ToModel().ToList()
+        Placements = solution.Placements.ToModel().ToList(),
+        LayoutPieceIds = solution.GetLayout(boardSize).ToModel(),
     };
+
+    private static string[][] ToModel(this Piece?[,] layout)
+    {
+        int xSize = layout.GetLength(0);
+        int ySize = layout.GetLength(1);
+
+        return Enumerable.Range(0, ySize).Select(y =>
+            Enumerable.Range(0, xSize).Select(x =>
+                layout[x, y].ToModel()
+            ).ToArray()
+        ).ToArray();
+    }
+
+    private static string ToModel(this Piece? piece) => piece?.Name ?? string.Empty;
 
     public static IEnumerable<Model.Placement> ToModel(this IEnumerable<Placement> source) => source.Select(placement => placement.ToModel());
 
